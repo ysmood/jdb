@@ -7,5 +7,5 @@ It use json to decrease javascript code handlers.
 
 ## Model
 
-The DB create a independent child process waiting for javascript code to handle the internal json
+The DB will creates a independent child process waiting for javascript code to handle with the internal json
 object, and append the json object and javascript code to permanent storage.
