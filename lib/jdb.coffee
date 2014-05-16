@@ -3,9 +3,9 @@ class JDB.Jdb
 		@callback_list = {}
 		@callback_list_count = 0
 
-		@init_daemon()
+		@init_jworker()
 
-	send_handler: (handler, callback) ->
+	exec: (handler, callback) ->
 		id = Date.now() + @callback_list_count++
 
 		@callback_list[id] = callback if callback
@@ -16,7 +16,7 @@ class JDB.Jdb
 			handler: handler.toString()
 		}
 
-	init_daemon: ->
+	init_jworker: ->
 		child_process = require 'child_process'
 		process.env.JDB_launch = 'jworker'
 

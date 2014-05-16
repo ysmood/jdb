@@ -24,6 +24,8 @@ class JDB.Jworker
 				data
 			}
 
+		doc = @doc
+
 		eval "(#{handler})(this, callback)"
 
 	constructor: ->

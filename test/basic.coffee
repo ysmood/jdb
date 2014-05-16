@@ -1,11 +1,13 @@
-Jdb = require '../app'
+Jdb = require '../'
 jdb = new Jdb
 
-jdb.send_handler(
-	(jdb, done) ->
-		jdb.doc.a = 10
-		done('asdf')
-	(data) ->
-		console.log data
-)
+# Save value.
+jdb.exec (jdb) ->
+	jdb.doc.a = 10
 
+# Get value.
+jdb.exec((jdb, done) ->
+	done jdb.doc.a
+, (data) ->
+	console.log data
+)
