@@ -24,9 +24,7 @@ class JDB.Jworker
 				data
 			}
 
-		doc = @doc
-
-		eval "(#{handler})(this, callback)"
+		eval "(#{handler})(this.doc, callback)"
 
 	constructor: ->
 		handle_command = handle_command.bind(@)
