@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/ysmood/jdb/issues"
   },
-  "homepage": "https://github.com/ysmood/jdb"
+  "homepage": "https://github.com/ysmood/jdb",
+  "dependencies": {
+    "coffee-script": "^1.7.1"
+  }
 }
