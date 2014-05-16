@@ -1,8 +1,7 @@
 # JDB
 
-This project aims to create a flexable database that won't make you pain.
-It won't try to create any werid syntax or rules. Just few APIs will make everything
-work smoothly. It is a append only database.
+This project aims to create a flexable database that won't try to create any werid syntax or rules.
+Just few APIs will make everything work smoothly. It is an append-only database.
 It use json to decrease javascript code handlers.
 
 
