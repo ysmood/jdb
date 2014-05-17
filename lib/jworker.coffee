@@ -1,9 +1,15 @@
-JDB.Jworker = ->
-	self = @
+
+class JDB.Jworker then constructor: (options) ->
+	# Public
+	self = {
+
+	}
+
+	# Private
 	ego = {
 		doc: {}
 
-		constructor: ->
+		init: ->
 			ego.init_handlers()
 
 		init_handlers: ->
@@ -30,11 +36,15 @@ JDB.Jworker = ->
 			eval "(#{handler})(ego.doc, callback)"
 	}
 
+	for k, v of self
+		@[k] = v
+	self = @
+
 	for k, v of ego
 		if typeof v == 'function'
 			v.bind self
 
-	ego.constructor()
+	ego.init()
 
 	return self
 
