@@ -1,38 +1,42 @@
-class JDB.Jworker
+JDB.Jworker = ->
+	self = @
+	ego = {
+		doc: {}
 
-	init_variables = ->
-		@doc = {}
+		constructor: ->
+			ego.init_handlers()
 
-	init_handlers = ->
-		process.on 'uncaughtException', (err) ->
-			process.send {
-				type: 'error'
-				message: err.message
-				stack: err.stack
-			}
+		init_handlers: ->
+			process.on 'uncaughtException', (err) ->
+				process.send {
+					type: 'error'
+					message: err.message
+					stack: err.stack
+				}
 
-		process.on 'message', (msg) ->
-			switch msg.type
-				when 'handler'
-					handle_command msg.handler, msg.id
+			process.on 'message', (msg) ->
+				switch msg.type
+					when 'handler'
+						ego.handle_command msg.handler, msg.id
 
-	handle_command = (handler, id) ->
-		callback = (data) ->
-			process.send {
-				type: 'callback'
-				id
-				data
-			}
+		handle_command: (handler, id) ->
+			callback = (data) ->
+				process.send {
+					type: 'callback'
+					id
+					data
+				}
 
-		eval "(#{handler})(this.doc, callback)"
+			eval "(#{handler})(ego.doc, callback)"
+	}
 
-	constructor: ->
-		handle_command = handle_command.bind(@)
-		init_variables = init_variables.bind(@)
-		init_handlers = init_handlers.bind(@)
+	for k, v of ego
+		if typeof v == 'function'
+			v.bind self
 
-		init_handlers()
-		init_variables()
+	ego.constructor()
+
+	return self
 
 
 new JDB.Jworker
