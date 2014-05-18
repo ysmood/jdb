@@ -2,7 +2,10 @@ assert = require 'assert'
 
 db_path = 'test/baisc.db'
 
-jdb = new (require '../') { db_path }
+jdb = new (require '../') {
+	db_path
+	compact_db_file: false
+}
 
 describe 'set value', ->
 	it 'should work without error', (tdone) ->
