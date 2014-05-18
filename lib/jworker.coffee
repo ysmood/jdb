@@ -27,8 +27,8 @@ class JDB.Jworker then constructor: (options) ->
 
 			process.on 'message', (msg) ->
 				switch msg.type
-					when 'handler'
-						ego.handle_command msg.handler, msg.id
+					when 'command'
+						ego.handle_command msg.command, msg.id
 
 					when 'compact_db_file'
 						ego.compact_db_file msg.id
@@ -73,14 +73,14 @@ class JDB.Jworker then constructor: (options) ->
 				error
 			}
 
-		handle_command: (handler, id) ->
+		handle_command: (command, id) ->
 			doc = ego.doc
 
 			is_sent = false
 
 			is_rolled_back = false
 
-			cmd = "(#{handler})(jdb);\n"
+			cmd = "(#{command})(jdb);\n"
 
 			jdb = {
 				doc: ego.doc

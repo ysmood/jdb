@@ -4,8 +4,8 @@ class JDB.Jdb then constructor: (options) ->
 	# Public
 	self = {
 
-		exec: (handler, callback) ->
-			if not handler
+		exec: (command, callback) ->
+			if not command
 				return
 
 			id = ego.callback_uid()
@@ -14,9 +14,9 @@ class JDB.Jdb then constructor: (options) ->
 				callback?.apply this, arguments
 
 			ego.daemon.send {
-				type: 'handler'
+				type: 'command'
 				id
-				handler: handler.toString(-1)
+				command: command.toString(-1)
 			}
 
 		compact_db_file: (callback) ->
