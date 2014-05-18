@@ -1,4 +1,11 @@
 require 'coffee-script/register'
+{ spawn } = require 'child_process'
 
 task 'test', 'Basic test', ->
-	require './test/basic'
+	spawn 'mocha', [
+		'-r'
+		'coffee-script/register'
+		'test/test.coffee'
+	], {
+		stdio: 'inherit'
+	}

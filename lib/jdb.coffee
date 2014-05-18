@@ -28,6 +28,11 @@ class JDB.Jdb then constructor: (options) ->
 		uncaught_exception: (msg) ->
 			console.log msg.message
 			console.log msg.stack
+
+		db_file_error: (msg) ->
+			console.log msg.message
+			console.log msg.stack
+
 	}
 
 	# Private
@@ -62,8 +67,11 @@ class JDB.Jdb then constructor: (options) ->
 
 			ego.daemon.on 'message', (msg) ->
 				switch msg.type
-					when 'uncaughtException'
-						ego.uncaught_exception? msg
+					when 'uncaught_exception'
+						self.uncaught_exception msg
+
+					when 'db_file_error'
+						self.db_file_error msg
 
 					when 'callback'
 						ego.callback_list[msg.id] msg.error, msg.data

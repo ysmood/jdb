@@ -19,7 +19,7 @@ class JDB.Jworker then constructor: (options) ->
 		init_messager: ->
 			process.on 'uncaughtException', (err) ->
 				process.send {
-					type: 'uncaughtException'
+					type: 'uncaught_exception'
 					message: err.message
 					stack: err.stack
 				}
@@ -35,8 +35,16 @@ class JDB.Jworker then constructor: (options) ->
 		init_db_file: ->
 			if fs.existsSync ego.db_path
 				str = fs.readFileSync ego.db_path, 'utf8'
-				eval str
-				ego.doc = doc if typeof doc == 'object'
+				try
+					eval str
+					ego.doc = doc if typeof doc == 'object'
+				catch err
+					process.send {
+						type: 'db_file_error'
+						message: err.message
+						stack: err.stack
+					}
+
 			else
 				ego.compact_db_file()
 
@@ -59,6 +67,8 @@ class JDB.Jworker then constructor: (options) ->
 			}
 
 		handle_command: (handler, id) ->
+			doc = ego.doc
+
 			callback = (data) ->
 				process.send {
 					type: 'callback'
@@ -66,10 +76,19 @@ class JDB.Jworker then constructor: (options) ->
 					data
 				}
 
-			doc = ego.doc
-
 			cmd = "(#{handler})(doc, callback);\n"
-			eval cmd
+
+			try
+				eval cmd
+			catch err
+				process.send {
+					type: 'callback'
+					id
+					error: {
+						message: err.message
+						stack: err.stack
+					}
+				}
 
 			fs.appendFile ego.db_path, cmd
 	}
