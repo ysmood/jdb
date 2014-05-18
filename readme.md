@@ -49,21 +49,26 @@ jdb.exec(
     You can't share variable within it.
 
       * **doc**
+
         The main storage `Object`.
 
       * **send (data)**
+
         Send data to the `callback`.
 
          * **data**
+
            Type is `Object`
 
   * **callback (err, data)**
     This function will be invoked when the `send` function is called asynchronous.
 
       * **err**
+
         Type is `Object`.
 
       * **data**
+
         Type is `Object`.
 
 
