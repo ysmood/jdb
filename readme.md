@@ -2,7 +2,7 @@
 
 This project aims to create a flexible database that won't try to create any weird syntax or rules.
 Just few APIs will make everything work smoothly. It is an append-only database.
-It use json to decrease javascript code handlers.
+It use json to decrease javascript code commands.
 
 
 # Model
@@ -85,9 +85,9 @@ jdb.exec((jdb) ->
 
            Where to save the database file. Default value is `jdb.db`.
 
-* ### exec (handler, [callback])
+* ### exec (command, [callback])
 
-  * **handler (jdb)**
+  * **command (jdb)**
 
       A function or corresponding source code.
       The code in this function is in another process.
@@ -137,12 +137,12 @@ jdb.exec((jdb) ->
 
 * ### compact_db_file: (callback)
 
-  Reduce the size of the database file. It will calc all the handlers and save the final `doc` object to the file and delete all the other handlers.
+  Reduce the size of the database file. It will calc all the commands and save the final `doc` object to the file and delete all the other commands.
 
   **This method will be called automatically every time you launch the database**.
 
 * ### uncaught_exception: (msg)
-  Override it if you want to handler error yourself. The default behavior is just log the `msg` object out.
+  Override it if you want to command error yourself. The default behavior is just log the `msg` object out.
 
 * ### db_file_error: (msg)
-  Override it if you want to handler error yourself. The default behavior is just log the `msg` object out.
+  Override it if you want to command error yourself. The default behavior is just log the `msg` object out.
