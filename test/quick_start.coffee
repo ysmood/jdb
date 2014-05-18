@@ -1,27 +1,30 @@
 jdb = new (require '../')
 
-# Execute command in js or coffee.
-jdb.exec (jdb) ->
-    jdb.doc.hello = 'hello'
-    jdb.doc.world = 'world'
-    jdb.save()
+hello = 'hello'
+world = 'world'
+
+# Execute command in js code or coffee function.
+jdb.exec """
+    function (jdb) {
+        jdb.doc.hello = '#{hello}';
+        jdb.doc.world = '#{world}';
+        jdb.save();
+    }
+"""
 
 # The save effect with the code above.
 same_with_above = ->
-    jdb.exec """
-    function (any_name) {
-        any_name.doc.hello = 'hello';
-        any_name.doc.world = 'world';
-        any_name.save();
-    }
-    """
+    jdb.exec (jdb) ->
+        jdb.doc.hello = 'hello'
+        jdb.doc.world = 'world'
+        jdb.save()
 
 # Don't do something like this!
 wrong = ->
-  val = 10
-  jdb.exec (jdb) ->
-      jdb.doc.a = val    # `jdb.doc.a` here won't have the scope as the `val`.
-      jdb.save()
+    jdb.exec (jdb) ->
+        # Error: the scope here cannot access the variable `hello`.
+        jdb.doc.hello = hello
+        jdb.save()
 
 # Get the value.
 jdb.exec(
