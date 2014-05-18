@@ -21,6 +21,7 @@ It uses json to decrease javascript code commands.
 The DB will create an independent child process waiting for javascript code to handle the internal json
 object, and append the json object and javascript code to permanent storage.
 
+
 # Quick start
 
 ### Installation
@@ -63,7 +64,6 @@ jdb.exec
     callback: (err, data) ->
         console.log data # output >> [ "hello", "world" ]
 
-
 # You can even load third party libs to handle with your data.
 jdb.exec
     command: (jdb) ->
@@ -81,8 +81,8 @@ jdb.exec
         console.log diff # output >> [ 'h', 'e' ]
         process.exit()
 
-
 ```
+
 
 # API
 
@@ -159,7 +159,6 @@ jdb.exec
          Type is `Object`.
 
 
-
 * ### compact_db_file: (callback)
 
   Reduce the size of the database file. It will calc all the commands and save the final `doc` object to the file and delete all the other commands.
@@ -170,9 +169,11 @@ jdb.exec
 * ### db_file_error: (msg)
   Override it if you want to command error yourself. The default behavior is just log the `msg` object out.
 
+
 # Benchmarks
 
 Well, if I had time.
+
 
 # License
 
