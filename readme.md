@@ -173,3 +173,9 @@ jdb.exec
 # Benchmarks
 
 Well, if I had time.
+
+# License
+
+## BSD
+
+May 2014, Yad Smood
