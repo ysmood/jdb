@@ -39,6 +39,9 @@ class JDB.Jworker then constructor: (options) ->
 			else
 				ego.compact_db_file()
 
+			if process.env.JDB_compact_db_file == 'true'
+				ego.compact_db_file()
+
 		load_data: ->
 			str = fs.readFileSync ego.db_path, 'utf8'
 			try

@@ -85,6 +85,10 @@ jdb.exec
 
            Where to save the database file. Default value is `jdb.db`.
 
+         * **compact_db_file**
+
+           Boolean. Whether to compact db file before start up or not.
+
 * ### exec (options)
 
   `options` is an object, here are its member list.
@@ -148,8 +152,6 @@ jdb.exec
 * ### compact_db_file: (callback)
 
   Reduce the size of the database file. It will calc all the commands and save the final `doc` object to the file and delete all the other commands.
-
-  **This method will be called automatically every time you launch the database**.
 
 * ### uncaught_exception: (msg)
   Override it if you want to command error yourself. The default behavior is just log the `msg` object out.

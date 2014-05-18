@@ -10,6 +10,8 @@ jdb.exec
         world
     }
     command: (jdb, data) ->
+        jdb.doc.a ?= 0
+        jdb.doc.a++
         jdb.doc.hello = data.hello
         jdb.doc.world = data.world
         jdb.save()
@@ -45,8 +47,4 @@ jdb.exec
     callback: (err, diff) ->
         console.log diff # output >> [ 'h', 'e' ]
 
-        setTimeout(->
-            fs = require 'fs'
-            fs.unlinkSync 'jdb.db'
-            process.exit()
-        , 100)
+        process.exit()
