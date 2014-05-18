@@ -51,7 +51,7 @@ jdb.exec(
       * **doc**
         The main storage `Object`.
 
-      * **send (data)****
+      * **send (data)**
         Send data to the `callback`.
 
          * **data**
