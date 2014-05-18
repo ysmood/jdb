@@ -18,14 +18,14 @@ jdb = new (require 'jdb')
 
 # Execute command in js or coffee.
 jdb.exec (doc) ->
-	doc.hello = 'world'
+    doc.hello = 'world'
 
 # Get the value.
 jdb.exec(
-	(doc, send) ->
-		send doc.hello
-	(data) ->
-		console.log data # output >> "world"
+    (doc, send) ->
+        send doc.hello
+    (data) ->
+        console.log data # output >> "world"
 )
 
 ```
