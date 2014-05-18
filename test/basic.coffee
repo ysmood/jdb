@@ -7,8 +7,9 @@ jdb = new (require '../') { db_path }
 describe 'set value', ->
 	it 'should work without error', (tdone) ->
 		jdb.exec
-			command: (db) ->
-				db.doc.a = 10
+			data: 10
+			command: (db, data) ->
+				db.doc.a = data
 				db.save()
 
 			callback: (err) ->
