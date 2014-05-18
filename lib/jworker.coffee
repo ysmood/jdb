@@ -28,7 +28,7 @@ class JDB.Jworker then constructor: (options) ->
 			process.on 'message', (msg) ->
 				switch msg.type
 					when 'command'
-						ego.handle_command msg.command, msg.id
+						ego.handle_command msg
 
 					when 'compact_db_file'
 						ego.compact_db_file msg.id
@@ -73,18 +73,16 @@ class JDB.Jworker then constructor: (options) ->
 				error
 			}
 
-		handle_command: (command, id) ->
+		handle_command: (msg) ->
 			doc = ego.doc
 
 			is_sent = false
 
 			is_rolled_back = false
 
-			cmd = "(#{command})(jdb);\n"
+			cmd = "(#{msg.command})(jdb, #{JSON.stringify(msg.data)});\n"
 
 			jdb = {
-				doc: ego.doc
-
 				send: (data) ->
 					if is_sent
 						return
@@ -93,7 +91,7 @@ class JDB.Jworker then constructor: (options) ->
 
 					process.send {
 						type: 'callback'
-						id
+						id: msg.id
 						data
 					}
 
@@ -110,6 +108,12 @@ class JDB.Jworker then constructor: (options) ->
 					is_rolled_back = true
 			}
 
+			Object.defineProperty jdb, 'doc', {
+				get: -> ego.doc
+				set: -> console.error ">> Error: 'jdb.doc' is readonly."
+			}
+
+
 			try
 				eval cmd
 			catch err
@@ -117,7 +121,7 @@ class JDB.Jworker then constructor: (options) ->
 
 				process.send {
 					type: 'callback'
-					id
+					id: msg.id
 					error: {
 						message: err.message
 						stack: err.stack
