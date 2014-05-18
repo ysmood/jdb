@@ -58,7 +58,9 @@ class JDB.Jworker then constructor: (options) ->
 					"""
 						var jdb = {
 							doc: #{JSON.stringify(ego.doc)},
-							send: function () {}
+							send: function () {},
+							save: function () {},
+							rollback: function () {}
 						};\n
 					"""
 				)
@@ -77,6 +79,8 @@ class JDB.Jworker then constructor: (options) ->
 			is_sent = false
 
 			is_rolled_back = false
+
+			cmd = "(#{handler})(jdb);\n"
 
 			jdb = {
 				doc: ego.doc
@@ -99,21 +103,15 @@ class JDB.Jworker then constructor: (options) ->
 					if not is_sent
 						jdb.send data
 
-					fs.appendFile ego.db_path, jdb.cmd
+					fs.appendFile ego.db_path, cmd
 
 				rollback: ->
 					ego.load_data()
 					is_rolled_back = true
 			}
 
-			# cmd is immutable.
-			Object.defineProperty jdb, 'cmd', {
-				configurable: false
-				get: -> "(#{handler})(jdb);\n"
-			}
-
 			try
-				eval jdb.cmd
+				eval cmd
 			catch err
 				jdb.rollback()
 
