@@ -12,6 +12,10 @@ object, and append the json object and javascript code to permanent storage.
 
 # Quick start
 
+Install `jdb` first.
+
+    npm install jdb
+
 ```coffeescript
 
 jdb = new (require 'jdb')
