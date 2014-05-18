@@ -5,9 +5,13 @@ class JDB.Jdb then constructor: (options) ->
 	self = {
 
 		exec: (handler, callback) ->
+			if not handler
+				return
+
 			id = ego.callback_uid()
 
-			ego.callback_list[id] = callback if callback
+			ego.callback_list[id] = ->
+				callback?.apply this, arguments
 
 			ego.daemon.send {
 				type: 'handler'
@@ -26,12 +30,14 @@ class JDB.Jdb then constructor: (options) ->
 			}
 
 		uncaught_exception: (msg) ->
-			console.log msg.message
-			console.log msg.stack
+			console.error msg.type
+			console.error msg.message
+			console.error msg.stack
 
 		db_file_error: (msg) ->
-			console.log msg.message
-			console.log msg.stack
+			console.error msg.type
+			console.error msg.message
+			console.error msg.stack
 
 	}
 
@@ -56,7 +62,7 @@ class JDB.Jdb then constructor: (options) ->
 				ego.opts[k] = options[k] if options[k]
 
 		callback_uid: ->
-			Date.now() + ego.callback_list_count++
+			ego.callback_list_count++
 
 		init_jworker: ->
 			child_process = require 'child_process'
@@ -74,8 +80,9 @@ class JDB.Jdb then constructor: (options) ->
 						self.db_file_error msg
 
 					when 'callback'
-						ego.callback_list[msg.id] msg.error, msg.data
-						delete ego.callback_list[msg.id]
+						if typeof msg.id != 'undefined'
+							ego.callback_list[msg.id] msg.error, msg.data
+							delete ego.callback_list[msg.id]
 
 	}
 

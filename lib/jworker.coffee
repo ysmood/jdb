@@ -54,7 +54,7 @@ class JDB.Jworker then constructor: (options) ->
 					ego.db_path
 					"""
 						var doc = #{JSON.stringify(ego.doc)},
-							callback = function () {};\n
+							send = function () {};\n
 					"""
 				)
 			catch e
@@ -69,14 +69,14 @@ class JDB.Jworker then constructor: (options) ->
 		handle_command: (handler, id) ->
 			doc = ego.doc
 
-			callback = (data) ->
+			send = (data) ->
 				process.send {
 					type: 'callback'
 					id
 					data
 				}
 
-			cmd = "(#{handler})(doc, callback);\n"
+			cmd = "(#{handler})(doc, send);\n"
 
 			try
 				eval cmd
