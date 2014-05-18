@@ -74,8 +74,6 @@ class JDB.Jworker then constructor: (options) ->
 			}
 
 		handle_command: (msg) ->
-			doc = ego.doc
-
 			is_sent = false
 
 			is_rolled_back = false
@@ -112,7 +110,6 @@ class JDB.Jworker then constructor: (options) ->
 				get: -> ego.doc
 				set: -> console.error ">> Error: 'jdb.doc' is readonly."
 			}
-
 
 			try
 				eval cmd
