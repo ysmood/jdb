@@ -34,7 +34,7 @@ class JDB.Jdb then constructor: (options) ->
 			console.error msg.message
 			console.error msg.stack
 
-		db_file_error: (msg) ->
+		db_parsing_error: (msg) ->
 			console.error msg.type
 			console.error msg.message
 			console.error msg.stack
@@ -76,8 +76,8 @@ class JDB.Jdb then constructor: (options) ->
 					when 'uncaught_exception'
 						self.uncaught_exception msg
 
-					when 'db_file_error'
-						self.db_file_error msg
+					when 'db_parsing_error'
+						self.db_parsing_error msg
 
 					when 'callback'
 						if typeof msg.id != 'undefined'

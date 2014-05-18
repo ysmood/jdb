@@ -35,27 +35,31 @@ class JDB.Jworker then constructor: (options) ->
 
 		init_db_file: ->
 			if fs.existsSync ego.db_path
-				str = fs.readFileSync ego.db_path, 'utf8'
-				try
-					eval str
-					ego.doc = doc if typeof doc == 'object'
-				catch err
-					process.send {
-						type: 'db_file_error'
-						message: err.message
-						stack: err.stack
-					}
-
+				ego.load_data()
 			else
 				ego.compact_db_file()
+
+		load_data: ->
+			str = fs.readFileSync ego.db_path, 'utf8'
+			try
+				eval str
+				ego.doc = jdb.doc if typeof jdb.doc == 'object'
+			catch err
+				process.send {
+					type: 'db_parsing_error'
+					message: err.message
+					stack: err.stack
+				}
 
 		compact_db_file: (id) ->
 			try
 				fs.writeFileSync(
 					ego.db_path
 					"""
-						var doc = #{JSON.stringify(ego.doc)},
-							send = function () {};\n
+						var jdb = {
+							doc: #{JSON.stringify(ego.doc)},
+							send: function () {}
+						};\n
 					"""
 				)
 			catch e
@@ -70,19 +74,49 @@ class JDB.Jworker then constructor: (options) ->
 		handle_command: (handler, id) ->
 			doc = ego.doc
 
-			send = (data) ->
-				process.send {
-					type: 'callback'
-					id
-					data
-				}
+			is_sent = false
 
-			cmd = "(#{handler})(doc, send);\n"
+			is_rolled_back = false
+
+			jdb = {
+				doc: ego.doc
+
+				send: (data) ->
+					if is_sent
+						return
+					else
+						is_sent = true
+
+					process.send {
+						type: 'callback'
+						id
+						data
+					}
+
+				save: (data) ->
+					return if is_rolled_back
+
+					if not is_sent
+						jdb.send data
+
+					fs.appendFile ego.db_path, jdb.cmd
+
+				rollback: ->
+					ego.load_data()
+					is_rolled_back = true
+			}
+
+			# cmd is immutable.
+			Object.defineProperty jdb, 'cmd', {
+				configurable: false
+				get: -> "(#{handler})(jdb);\n"
+			}
 
 			try
-				eval cmd
-				fs.appendFile ego.db_path, cmd
+				eval jdb.cmd
 			catch err
+				jdb.rollback()
+
 				process.send {
 					type: 'callback'
 					id

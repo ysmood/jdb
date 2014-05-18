@@ -6,9 +6,9 @@ jdb = new (require '../') { db_path }
 
 describe 'set value', ->
 	it 'should work without error', (tdone) ->
-		jdb.exec((doc, send) ->
-			doc.a = 10
-			send()
+		jdb.exec((db) ->
+			db.doc.a = 10
+			db.save()
 		, (err) ->
 			throw err if err
 			tdone()
@@ -16,9 +16,9 @@ describe 'set value', ->
 
 describe 'set value', ->
 	it 'should work without error', (tdone) ->
-		jdb.exec((doc, send) ->
-			doc.a = 10
-			send()
+		jdb.exec((db) ->
+			db.doc.a = 10
+			db.save()
 		, (err) ->
 			# throw err if err
 			tdone()
@@ -26,8 +26,8 @@ describe 'set value', ->
 
 describe 'get value', ->
 	it 'should work without error', (tdone) ->
-		jdb.exec((d, send) ->
-			send ++d.a
+		jdb.exec((db) ->
+			db.send ++db.doc.a
 		, (err, data) ->
 			assert.equal 11, data
 
@@ -40,7 +40,7 @@ describe 'compact_db_file', ->
 		fs = require 'fs'
 		str = fs.readFileSync db_path, 'utf8'
 		eval str
-		assert.equal 11, doc.a
+		assert.equal 11, jdb.doc.a
 
 		setTimeout(->
 			fs.unlinkSync db_path

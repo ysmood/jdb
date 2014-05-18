@@ -7,10 +7,9 @@ jdb = new (require '../') { db_path }
 
 describe 'Handle exception', ->
 	it 'the error should be catched properly', (tdone) ->
-		jdb.exec((doc, send) ->
-			doc.a = 10
-			doc.b = a
-			send()
+		jdb.exec((db) ->
+			db.doc.a = 10
+			db.doc.b = a
 		, (err) ->
 			if not err
 				throw 'error not catched'
@@ -18,11 +17,11 @@ describe 'Handle exception', ->
 				tdone()
 		)
 
-	it 'handlers follows the error one should work poperly', (tdone) ->
-		jdb.exec((doc, send) ->
-			send doc.a
+	it 'the db should rollback properly', (tdone) ->
+		jdb.exec((db) ->
+			db.send db.doc.a
 		, (err, data) ->
-			if err or assert.equal(data, 10)
+			if err or assert.equal(data, undefined)
 				throw err
 			else
 				setTimeout(->
