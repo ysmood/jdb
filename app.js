@@ -6,6 +6,7 @@ global.JDB = {};
 switch (process.env.JDB_launch) {
 	case 'jworker':
 		require('./lib/jworker');
+		new JDB.Jworker
 		break;
 
 	default:

@@ -104,6 +104,3 @@ class JDB.Jworker then constructor: (options) ->
 	ego.init()
 
 	return self
-
-
-new JDB.Jworker
