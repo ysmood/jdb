@@ -14,6 +14,16 @@ describe '#set value', ->
 			tdone()
 		)
 
+describe '#set value', ->
+	it 'should work without error', (tdone) ->
+		jdb.exec((doc, send) ->
+			doc.a = 10
+			send()
+		, (err) ->
+			# throw err if err
+			tdone()
+		)
+
 describe '#get value', ->
 	it 'should work without error', (tdone) ->
 		jdb.exec((d, send) ->

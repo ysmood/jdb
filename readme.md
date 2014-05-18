@@ -1,6 +1,6 @@
 # Overview
 
-This project aims to create a flexable database that won't try to create any werid syntax or rules.
+This project aims to create a flexable database that won't try to create any weird syntax or rules.
 Just few APIs will make everything work smoothly. It is an append-only database.
 It use json to decrease javascript code handlers.
 
@@ -48,6 +48,7 @@ jdb.exec(
 * ### exec (handler, [callback])
 
   * **handler (doc, send)**
+
     A function or corresponding source code.
     The code in this function is in another process.
     You can't share variable within it.
@@ -65,6 +66,7 @@ jdb.exec(
            Type is `Object`
 
   * **callback (err, data)**
+
     This function will be invoked when the `send` function is called asynchronous.
 
       * **err**

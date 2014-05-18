@@ -7,6 +7,7 @@ class JDB.Jworker then constructor: (options) ->
 	fs = require 'fs'
 
 	ego = {
+
 		doc: {}
 
 		db_path: process.env.JDB_db_path
@@ -80,6 +81,7 @@ class JDB.Jworker then constructor: (options) ->
 
 			try
 				eval cmd
+				fs.appendFile ego.db_path, cmd
 			catch err
 				process.send {
 					type: 'callback'
@@ -90,7 +92,6 @@ class JDB.Jworker then constructor: (options) ->
 					}
 				}
 
-			fs.appendFile ego.db_path, cmd
 	}
 
 	for k, v of self
