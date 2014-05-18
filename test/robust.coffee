@@ -5,7 +5,7 @@ db_path = 'test/robust.db'
 
 jdb = new (require '../') { db_path }
 
-describe '# Handle exception', ->
+describe 'Handle exception', ->
 	it 'the error should be catched properly', (tdone) ->
 		jdb.exec((doc, send) ->
 			doc.a = 10

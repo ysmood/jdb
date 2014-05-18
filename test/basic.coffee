@@ -4,7 +4,7 @@ db_path = 'test/baisc.db'
 
 jdb = new (require '../') { db_path }
 
-describe '#set value', ->
+describe 'set value', ->
 	it 'should work without error', (tdone) ->
 		jdb.exec((doc, send) ->
 			doc.a = 10
@@ -14,7 +14,7 @@ describe '#set value', ->
 			tdone()
 		)
 
-describe '#set value', ->
+describe 'set value', ->
 	it 'should work without error', (tdone) ->
 		jdb.exec((doc, send) ->
 			doc.a = 10
@@ -24,7 +24,7 @@ describe '#set value', ->
 			tdone()
 		)
 
-describe '#get value', ->
+describe 'get value', ->
 	it 'should work without error', (tdone) ->
 		jdb.exec((d, send) ->
 			send ++d.a
@@ -35,11 +35,14 @@ describe '#get value', ->
 				tdone()
 		)
 
-describe '#compact_db_file', ->
-	it 'the doc should be { a: 11 }', ->
+describe 'compact_db_file', ->
+	it 'the doc should be { a: 11 }', (tdone) ->
 		fs = require 'fs'
 		str = fs.readFileSync db_path, 'utf8'
 		eval str
 		assert.equal 11, doc.a
 
-		fs.unlinkSync db_path
+		setTimeout(->
+			fs.unlinkSync db_path
+			tdone()
+		, 100)
