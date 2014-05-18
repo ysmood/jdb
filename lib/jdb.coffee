@@ -5,16 +5,29 @@ class JDB.Jdb then constructor: (options) ->
 	self = {
 
 		exec: (handler, callback) ->
-			id = Date.now() + ego.callback_list_count++
+			id = ego.callback_uid()
 
 			ego.callback_list[id] = callback if callback
 
 			ego.daemon.send {
 				type: 'handler'
-				id: id
+				id
 				handler: handler.toString(-1)
 			}
 
+		compact_db_file: (callback) ->
+			id = ego.callback_uid()
+
+			ego.callback_list[id] = callback if callback
+
+			ego.daemon.send {
+				type: 'compact_db_file'
+				id
+			}
+
+		uncaught_exception: (msg) ->
+			console.log msg.message
+			console.log msg.stack
 	}
 
 	# Private
@@ -37,6 +50,9 @@ class JDB.Jdb then constructor: (options) ->
 			for k, v of ego.opts
 				ego.opts[k] = options[k] if options[k]
 
+		callback_uid: ->
+			Date.now() + ego.callback_list_count++
+
 		init_jworker: ->
 			child_process = require 'child_process'
 			process.env.JDB_launch = 'jworker'
@@ -46,12 +62,11 @@ class JDB.Jdb then constructor: (options) ->
 
 			ego.daemon.on 'message', (msg) ->
 				switch msg.type
-					when 'error'
-						console.log msg.message
-						console.log msg.stack
+					when 'uncaughtException'
+						ego.uncaught_exception? msg
 
 					when 'callback'
-						ego.callback_list[msg.id] msg.data
+						ego.callback_list[msg.id] msg.error, msg.data
 						delete ego.callback_list[msg.id]
 
 	}

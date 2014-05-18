@@ -1,25 +1,25 @@
 
 class JDB.Jworker then constructor: (options) ->
 	# Public
-	self = {
-
-	}
+	self = {}
 
 	# Private
+	fs = require 'fs'
+
 	ego = {
 		doc: {}
 
 		db_path: process.env.JDB_db_path
 
 		init: ->
-			ego.init_handlers()
+			ego.init_messager()
 
 			ego.init_db_file()
 
-		init_handlers: ->
+		init_messager: ->
 			process.on 'uncaughtException', (err) ->
 				process.send {
-					type: 'error'
+					type: 'uncaughtException'
 					message: err.message
 					stack: err.stack
 				}
@@ -29,25 +29,36 @@ class JDB.Jworker then constructor: (options) ->
 					when 'handler'
 						ego.handle_command msg.handler, msg.id
 
-		init_db_file: ->
-			fs = require 'fs'
+					when 'compact_db_file'
+						ego.compact_db_file msg.id
 
+		init_db_file: ->
 			if fs.existsSync ego.db_path
 				str = fs.readFileSync ego.db_path, 'utf8'
 				eval str
-				ego.doc = doc
+				ego.doc = doc if typeof doc == 'object'
+			else
+				ego.compact_db_file()
 
-			fs.writeFileSync(
-				ego.db_path
-				"""
-					var doc = #{JSON.stringify(ego.doc)},
-						callback = function () {};
-				"""
-			)
+		compact_db_file: (id) ->
+			try
+				fs.writeFileSync(
+					ego.db_path
+					"""
+						var doc = #{JSON.stringify(ego.doc)},
+							callback = function () {};\n
+					"""
+				)
+			catch e
+				error = e
+
+			process.send {
+				type: 'callback'
+				id
+				error
+			}
 
 		handle_command: (handler, id) ->
-			fs = require 'fs'
-
 			callback = (data) ->
 				process.send {
 					type: 'callback'
