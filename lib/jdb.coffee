@@ -12,7 +12,7 @@ class JDB.Jdb then constructor: (options) ->
 			ego.daemon.send {
 				type: 'handler'
 				id: id
-				handler: handler.toString()
+				handler: handler.toString(-1)
 			}
 
 	}
@@ -24,7 +24,7 @@ class JDB.Jdb then constructor: (options) ->
 		callback_list_count: 0
 		daemon: null
 		opts: {
-			db_file: 'jdb.db'
+			db_path: 'jdb.db'
 		}
 
 		init: ->
@@ -40,7 +40,7 @@ class JDB.Jdb then constructor: (options) ->
 		init_jworker: ->
 			child_process = require 'child_process'
 			process.env.JDB_launch = 'jworker'
-			process.env.JDB_db_file = ego.opts.db_file
+			process.env.JDB_db_path = ego.opts.db_path
 
 			ego.daemon = child_process.fork __dirname + '/../app.js'
 
