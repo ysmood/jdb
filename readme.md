@@ -1,13 +1,24 @@
 # Overview
 
 This project aims to create a flexible database that won't try to create any weird syntax or rules.
-Just few APIs will make everything work smoothly. It is an append-only database.
-It use json to decrease javascript code commands.
+Just few APIs will make everything work smoothly.
+It is an append-only in-memory database.
+It uses json to decrease javascript code commands.
+
+# Features
+
+* Light weight.
+
+* Use full functioned javascript to operate your data, no steep learning curve.
+
+* Make debugging inside the data possible.
+
+* Runs in an independent process, thread safe.
 
 
 # Model
 
-The DB will create a independent child process waiting for javascript code to handle the internal json
+The DB will create an independent child process waiting for javascript code to handle the internal json
 object, and append the json object and javascript code to permanent storage.
 
 # Quick start
@@ -77,7 +88,7 @@ jdb.exec
 
 ## class Jdb
 
-* ### Constructor (options)
+* ### constructor (options)
 
       * **options**
 
