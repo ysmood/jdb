@@ -1,6 +1,6 @@
 assert = require 'assert'
 
-db_path = 'test.db'
+db_path = 'test/baisc.db'
 
 jdb = new (require '../') { db_path }
 
@@ -41,3 +41,5 @@ describe '#compact_db_file', ->
 		str = fs.readFileSync db_path, 'utf8'
 		eval str
 		assert.equal 11, doc.a
+
+		fs.unlinkSync db_path
