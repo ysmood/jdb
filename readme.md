@@ -169,3 +169,7 @@ jdb.exec
 
 * ### db_file_error: (msg)
   Override it if you want to command error yourself. The default behavior is just log the `msg` object out.
+
+# Benchmarks
+
+Well, if I had time.
