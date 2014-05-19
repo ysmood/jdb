@@ -4,17 +4,33 @@ Benchmark.support.timeout = false
 
 jdb = new (require '../')
 
-suite.add('# insert', {
+suite
+
+.add('# insert', {
 	defer: true
 	fn: (deferred) ->
 		jdb.exec {
 			command: (jdb) ->
-				jdb.doc.a = 10
+				jdb.doc.arr ?= []
+				jdb.doc.arr.push Math.random()
 				jdb.save()
 			callback: (err, data) ->
 				deferred.resolve()
 		}
-}).on 'cycle', (e) ->
+})
+
+.add('# query', {
+	defer: true
+	fn: (deferred) ->
+		jdb.exec {
+			command: (jdb) ->
+				jdb.send jdb.doc.arr.slice(0, Math.random() * 100)
+			callback: (err, data) ->
+				deferred.resolve()
+		}
+})
+
+.on 'cycle', (e) ->
 	console.log e.target.toString()
 .on 'complete', (e) ->
 	jdb.exit()
