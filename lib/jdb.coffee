@@ -10,6 +10,7 @@ class JDB.Jdb then constructor: (options) ->
 
 			id = ego.callback_uid()
 
+			# TODO: it may result in memory leak.
 			ego.callback_list[id] = ->
 				opts.callback?.apply this, arguments
 
