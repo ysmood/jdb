@@ -175,7 +175,8 @@ jdb.exec
 
 # Benchmarks
 
-Well, if I had time.
+* insert x 1,071 ops/sec ±174.38% (73 runs sampled)
+* query x 7,727 ops/sec ±1.83% (78 runs sampled)
 
 
 # License

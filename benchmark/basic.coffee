@@ -6,7 +6,7 @@ jdb = new (require '../')
 
 suite
 
-.add('# insert', {
+.add('* insert', {
 	defer: true
 	fn: (deferred) ->
 		jdb.exec {
@@ -19,7 +19,7 @@ suite
 		}
 })
 
-.add('# query', {
+.add('* query', {
 	defer: true
 	fn: (deferred) ->
 		jdb.exec {
