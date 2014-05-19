@@ -22,5 +22,9 @@
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
     "coffee-script": "^1.7.1"
+  },
+  "devDependencies": {
+    "benchmark": "^1.0.0",
+    "mocha": "^1.19.0"
   }
 }
