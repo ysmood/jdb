@@ -33,7 +33,7 @@ task 'test', 'Basic test', ->
 
 task 'benchmark', 'Performance benchmark', ->
 	spawn coffee_bin, [
-		'./benchmark/insert.coffee'
+		'./benchmark/basic.coffee'
 	], {
 		stdio: 'inherit'
 	}
