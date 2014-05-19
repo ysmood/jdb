@@ -11,10 +11,11 @@ get_right_bin = (cmd) ->
 			cmd = which.sync(cmd)
 	return cmd
 
+coffee_bin = get_right_bin 'node_modules/.bin/coffee'
 mocha_bin = get_right_bin 'node_modules/.bin/mocha'
 
 task 'test', 'Basic test', ->
-	test = spawn mocha_bin, [
+	spawn mocha_bin, [
 		'-r'
 		'coffee-script/register'
 		'test/basic.coffee'
@@ -22,7 +23,7 @@ task 'test', 'Basic test', ->
 		stdio: 'inherit'
 	}
 
-	test = spawn mocha_bin, [
+	spawn mocha_bin, [
 		'-r'
 		'coffee-script/register'
 		'test/robust.coffee'
@@ -30,3 +31,9 @@ task 'test', 'Basic test', ->
 		stdio: 'inherit'
 	}
 
+task 'benchmark', 'Performance benchmark', ->
+	spawn coffee_bin, [
+		'./benchmark/insert.coffee'
+	], {
+		stdio: 'inherit'
+	}

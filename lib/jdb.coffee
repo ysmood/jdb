@@ -13,7 +13,7 @@ class JDB.Jdb then constructor: (options) ->
 			ego.callback_list[id] = ->
 				opts.callback?.apply this, arguments
 
-			ego.daemon.send {
+			ego.jworker.send {
 				type: 'command'
 				id
 				command: opts.command.toString(-1)
@@ -25,7 +25,7 @@ class JDB.Jdb then constructor: (options) ->
 
 			ego.callback_list[id] = callback if callback
 
-			ego.daemon.send {
+			ego.jworker.send {
 				type: 'compact_db_file'
 				id
 			}
@@ -40,6 +40,8 @@ class JDB.Jdb then constructor: (options) ->
 			console.error msg.message
 			console.error msg.stack
 
+		exit: ->
+			ego.jworker.kill('SIGINT')
 	}
 
 	# Private
@@ -47,7 +49,7 @@ class JDB.Jdb then constructor: (options) ->
 
 		callback_list: {}
 		callback_list_count: 0
-		daemon: null
+		jworker: null
 		opts: {
 			db_path: 'jdb.db'
 			compact_db_file: true
@@ -77,13 +79,13 @@ class JDB.Jdb then constructor: (options) ->
 			for k, v of process.env
 				env[k] = v
 
-			ego.daemon = child_process.fork(
+			ego.jworker = child_process.fork(
 				__dirname + '/../app.js'
 				[]
 				{ env }
 			)
 
-			ego.daemon.on 'message', (msg) ->
+			ego.jworker.on 'message', (msg) ->
 				switch msg.type
 					when 'uncaught_exception'
 						self.uncaught_exception msg

@@ -36,15 +36,15 @@ jdb.exec
     command: (jdb) ->
         try
             _ = require 'underscore'
-
-            _.each jdb.doc, (v, k) ->
-                jdb.doc[k] = v.split('')
-
-            jdb.send _.difference(jdb.doc.hello, jdb.doc.world)
         catch e
             jdb.send '"npm install underscore" first!'
+            return
+
+        _.each jdb.doc, (v, k) ->
+            jdb.doc[k] = v.toString().split('')
+
+        jdb.send _.difference(jdb.doc.hello, jdb.doc.world)
 
     callback: (err, diff) ->
         console.log diff # output >> [ 'h', 'e' ]
-
-        process.exit()
+        jdb.exit()
