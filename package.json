@@ -1,7 +1,7 @@
 {
   "name": "jdb",
   "version": "0.0.5",
-  "description": "A database makes your life easier.",
+  "description": "A database that hacks.",
   "main": "app.js",
   "scripts": {
     "test": "cake test"
