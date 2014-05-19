@@ -159,15 +159,18 @@ jdb.exec
          Type is `Object`.
 
 
-* ### compact_db_file: (callback)
+* ### compact_db_file (callback)
 
   Reduce the size of the database file. It will calc all the commands and save the final `doc` object to the file and delete all the other commands.
 
-* ### uncaught_exception: (msg)
+* ### uncaught_exception (msg)
   Override it if you want to command error yourself. The default behavior is just log the `msg` object out.
 
-* ### db_file_error: (msg)
+* ### db_file_error (msg)
   Override it if you want to command error yourself. The default behavior is just log the `msg` object out.
+
+* ### exit ()
+  Exit the database process.
 
 
 # Benchmarks
