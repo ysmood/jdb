@@ -175,9 +175,15 @@ jdb.exec
 
 # Benchmarks
 
+### Intel Core i7 2.3GHz
+
 * insert x 1,071 ops/sec ±174.38% (73 runs sampled)
 * query x 7,727 ops/sec ±1.83% (78 runs sampled)
 
+### Intel Core i5 2.60GHz
+
+* insert x 531 ops/sec ±165.52% (43 runs sampled)
+* query x 2,535 ops/sec ±2.20% (78 runs sampled)
 
 # License
 
