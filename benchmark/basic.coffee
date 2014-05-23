@@ -20,13 +20,11 @@ suite
 })
 
 .add('* query', {
-	defer: true
-	fn: (deferred) ->
+	fn: ->
 		jdb.exec {
 			command: (jdb) ->
 				jdb.send jdb.doc.arr.slice(0, Math.random() * 100)
 			callback: (err, data) ->
-				deferred.resolve()
 		}
 })
 
