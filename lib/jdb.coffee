@@ -24,12 +24,16 @@ class JDB.Jdb then constructor: (options) ->
 				save: (data) ->
 					return if is_rolled_back
 
-					if not is_sent
-						jdb.send data
-
 					fs.appendFile(
 						ego.opts.db_path
 						"(#{opts.command})(jdb, #{JSON.stringify(opts.data)});\n"
+						(err) ->
+							if not is_sent
+								jdb.rollback()
+								if err
+									jdb.send err
+								else
+									jdb.send data
 					)
 
 				rollback: ->
