@@ -8,57 +8,90 @@ class JDB.Jdb then constructor: (options) ->
 			if not opts.command
 				return
 
-			id = ego.callback_uid()
+			is_sent = false
 
-			# TODO: it may result in memory leak.
-			ego.callback_list[id] = ->
-				opts.callback?.apply this, arguments
+			is_rolled_back = false
 
-			ego.jworker.send {
-				type: 'command'
-				id
-				command: opts.command.toString(-1)
-				data: opts.data
+			jdb = {
+				send: (data) ->
+					if is_sent
+						return
+					else
+						is_sent = true
+
+					opts.callback? null, data
+
+				save: (data) ->
+					return if is_rolled_back
+
+					if not is_sent
+						jdb.send data
+
+					fs.appendFile(
+						ego.opts.db_path
+						"(#{opts.command})(jdb, #{JSON.stringify(opts.data)});\n"
+					)
+
+				rollback: ->
+					ego.load_data()
+					is_rolled_back = true
 			}
+
+			Object.defineProperty jdb, 'doc', {
+				get: -> ego.doc
+				set: -> console.error ">> Error: 'jdb.doc' is readonly."
+			}
+
+			try
+				opts.command jdb, opts.data
+			catch err
+				jdb.rollback()
+
+				if opts.callback
+					opts.callback err
+				else if err
+					throw err
 
 		compact_db_file: (callback) ->
-			id = ego.callback_uid()
+			try
+				fs.writeFileSync(
+					ego.opts.db_path
+					"""
+						var jdb = {
+							doc: #{JSON.stringify(ego.doc)},
+							send: function () {},
+							save: function () {},
+							rollback: function () {}
+						};\n
+					"""
+				)
+			catch err
+				error = err
 
-			ego.callback_list[id] = callback if callback
-
-			ego.jworker.send {
-				type: 'compact_db_file'
-				id
-			}
-
-		uncaught_exception: (msg) ->
-			console.error msg.type
-			console.error msg.message
-			console.error msg.stack
-
-		db_parsing_error: (msg) ->
-			console.error msg.type
-			console.error msg.message
-			console.error msg.stack
+			if callback
+				callback error
+			else if error
+				throw error
 
 		exit: ->
-			ego.jworker.kill('SIGINT')
 	}
+
+	fs = require 'fs'
 
 	# Private
 	ego = {
 
-		callback_list: {}
-		callback_list_count: 0
-		jworker: null
 		opts: {
 			db_path: 'jdb.db'
 			compact_db_file: true
+			callback: null
 		}
+
+		doc: {}
 
 		init: ->
 			ego.init_options()
-			ego.init_jworker()
+			ego.init_db_file()
 
 		init_options: ->
 			return if not options
@@ -66,38 +99,27 @@ class JDB.Jdb then constructor: (options) ->
 			for k, v of ego.opts
 				ego.opts[k] = options[k] if options[k] != undefined
 
-		callback_uid: ->
-			ego.callback_list_count++
+		init_db_file: ->
+			if fs.existsSync ego.opts.db_path
+				ego.load_data()
 
-		init_jworker: ->
-			child_process = require 'child_process'
+				if ego.opts.compact_db_file
+					self.compact_db_file()
+			else
+				self.compact_db_file()
 
-			env = {
-				JDB_launch: 'jworker'
-				JDB_db_path: ego.opts.db_path
-				JDB_compact_db_file: ego.opts.compact_db_file
-			}
-			for k, v of process.env
-				env[k] = v
+		load_data: ->
+			str = fs.readFileSync ego.opts.db_path, 'utf8'
+			try
+				eval str
+				ego.doc = jdb.doc if typeof jdb.doc == 'object'
+			catch err
+				error = err
 
-			ego.jworker = child_process.fork(
-				__dirname + '/../app.js'
-				[]
-				{ env }
-			)
-
-			ego.jworker.on 'message', (msg) ->
-				switch msg.type
-					when 'uncaught_exception'
-						self.uncaught_exception msg
-
-					when 'db_parsing_error'
-						self.db_parsing_error msg
-
-					when 'callback'
-						if typeof msg.id != 'undefined'
-							ego.callback_list[msg.id] msg.error, msg.data
-							delete ego.callback_list[msg.id]
+			if ego.opts.callback
+				ego.opts.callback error
+			else if error
+				throw error
 
 	}
 
