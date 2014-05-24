@@ -35,7 +35,7 @@ jdb.exec
 
 
 # You can even load third party libs to handle with your data.
-#
+# Here we use the underscore.js to diff some data.
 jdb.exec
     command: (jdb) ->
         try
