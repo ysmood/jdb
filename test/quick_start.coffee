@@ -28,7 +28,7 @@ some_data = {
 }
 
 
-# Execute command in js code or coffee function.
+# Set data.
 jdb.exec
     data: some_data
     command: (jdb, data) ->
