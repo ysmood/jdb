@@ -31,7 +31,6 @@ suite
 .on 'cycle', (e) ->
 	console.log e.target.toString()
 .on 'complete', (e) ->
-	jdb.exit()
 	fs = require 'fs'
 	fs.unlink 'jdb.db'
 .run()
