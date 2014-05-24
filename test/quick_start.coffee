@@ -2,52 +2,77 @@ jdb = new (require '../') { promise: true }
 
 
 # The data to play with.
-hello = 'hello'
-world = 'world'
+some_data = {
+    "name": {
+        "first": "Yad"
+        "last": "Smood"
+    }
+    "fav_color": "blue"
+    "languages": [
+        {
+            "name": "Chinese"
+            "level": 10
+        }
+        {
+            "name": "English"
+            "level": 8
+            "preferred": true
+        }
+        {
+            "name": "Japenese"
+            "level": 6
+        }
+    ]
+    "height": 180
+    "weight": 68
+}
 
 
 # Execute command in js code or coffee function.
 jdb.exec
-    data: {
-        hello
-        world
-    }
+    data: some_data
     command: (jdb, data) ->
-        jdb.doc.hello = data.hello
-        jdb.doc.world = data.world
-        jdb.save()
+        jdb.doc.ys = data
+        jdb.save 'saved'
+    callback: (err, data) ->
+        console.log data
 
 
 # Don't do something like this!
 wrong = ->
     jdb.exec command: (jdb) ->
-        # Error: the scope here cannot access the variable `hello`.
-        jdb.doc.hello = hello
+        # Error: the scope here should not access the variable `some_data`.
+        jdb.doc.ys = some_data
         jdb.save()
 
 
 # Get the value.
 jdb.exec
     command: (jdb) ->
-        jdb.send [jdb.doc.hello, jdb.doc.world]
+        jdb.send jdb.doc.ys.name
     callback: (err, data) ->
-        console.log data # output >> [ "hello", "world" ]
+        console.log data # output >> [ "Yad", "Smood" ]
 
 
 # You can even load third party libs to handle with your data.
-# Here we use the underscore.js to diff some data.
+# Here we use the JSONSelect and Mongodb like sift to query data.
 jdb.exec
     command: (jdb) ->
         try
-            _ = require 'underscore'
+            { match: jselect } = require 'JSONSelect'
+            sift = require 'sift'
         catch e
-            jdb.send '"npm install underscore" first!'
+            jdb.send '"npm install JSONSelect sift" first!'
 
-        _.each jdb.doc, (v, k) ->
-            jdb.doc[k] = v.split('')
-
-        jdb.send _.difference(jdb.doc.hello, jdb.doc.world)
-
+        jdb.send {
+            JSONSelect: jselect(
+                    'number', jdb.doc
+                )
+            mongodb_like: sift(
+                    { level: { $gt: 8 } }, jdb.doc.ys.languages
+                )
+        }
 # Here we use promise to get the callback data.
-.done (diff) ->
-    console.log diff # output >> [ 'h', 'e' ]
+.done (result) ->
+    console.log result.JSONSelect # output >> [ 10, 8, 6, 180, 68 ]
+    console.log result.mongodb_like # output >> [ { name: 'Chinese', level: 10 } ]
