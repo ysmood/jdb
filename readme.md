@@ -32,7 +32,7 @@ Install `jdb` first.
 
 ```coffeescript
 
-jdb = new (require 'jdb')
+jdb = new (require 'jdb') { promise: true }
 
 
 # The data to play with.
@@ -104,6 +104,10 @@ jdb.exec
          * **compact_db_file**
 
            Boolean. Whether to compact db file before start up or not.
+
+         * **promise**
+
+           Boolean. Whether to enable promise or not.
 
          * **error**
 
@@ -181,13 +185,13 @@ To run the benchmark:
 
 ### Intel Core i7 2.3GHz SSD
 
-* insert x 9,152 ops/sec ±2.21% (79 runs sampled)
-* query x 115,696 ops/sec ±2.22% (72 runs sampled)
+* insert x 15,719 ops/sec ±3.03% (76 runs sampled)
+* query x 123,143 ops/sec ±1.52% (81 runs sampled)
 
 ### Digitalocean VPS 1 CPU
 
-* insert x 5,147 ops/sec ±3.30% (84 runs sampled)
-* query x 45,137 ops/sec ±4.67% (77 runs sampled)
+* insert x 7,286 ops/sec ±2.77% (77 runs sampled)
+* query x 43,240 ops/sec ±3.07% (78 runs sampled)
 
 # License
 
