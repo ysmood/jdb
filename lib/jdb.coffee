@@ -30,19 +30,9 @@ class JDB.Jdb then constructor: (options) ->
 				save: (data) ->
 					return if is_rolled_back
 
-					fs.appendFile(
-						ego.opts.db_path
+					ego.db_file.write(
 						"(#{opts.command})(jdb, #{JSON.stringify(opts.data)});\n"
-						(err) ->
-							if err
-								jdb.rollback()
-								if opts.callback
-									opts.callback err
-								else
-									deferred.reject err
-								is_sent = true
-							else if not is_sent
-								jdb.send data
+						-> jdb.send data
 					)
 
 				rollback: ->
@@ -101,9 +91,16 @@ class JDB.Jdb then constructor: (options) ->
 
 		doc: {}
 
+		db_file: null
+
 		init: ->
 			ego.init_options()
 			ego.init_db_file()
+
+			ego.db_file = fs.createWriteStream ego.opts.db_path, {
+				flags: 'a'
+				encoding: 'utf8'
+			}
 
 		init_options: ->
 			return if not options
