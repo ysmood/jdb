@@ -3,7 +3,7 @@
 This project aims to create a flexible database that won't try to create any weird syntax or rules.
 Just few APIs will make everything work smoothly.
 It is an append-only in-memory database.
-It uses json to decrease javascript code commands.
+It uses json to decrease javascript commands.
 
 # Features
 

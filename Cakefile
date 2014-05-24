@@ -43,13 +43,13 @@ task 'build', 'Compile coffee to js', ->
 	console.log ">> Compile coffee..."
 
 	spawn coffee_bin, [
-		'-c'
+		'-cb'
 		'lib'
 	], {
 		stdio: 'inherit'
 	}
 
-task 'publish_done', 'Clean js', ->
+task 'clean', 'Clean js', ->
 	console.log ">> Clean js..."
 
 	glob.sync 'lib/**/*.js', (err, paths) ->

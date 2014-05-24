@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cake test",
     "prepublish": "cake build",
-    "publish": "cake publish_done"
+    "publish": "cake clean"
   },
   "repository": {
     "type": "git",
