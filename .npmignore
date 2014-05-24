@@ -3,3 +3,4 @@ test
 Cakefile
 .gitignore
 *.coffee
+*.db
