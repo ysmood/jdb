@@ -17,6 +17,15 @@ describe 'Handle exception', ->
 				else
 					tdone()
 
+	it 'should work with specific error', (tdone) ->
+		jdb.exec
+			command: (db) ->
+				db.doc.a.un_defined = 10
+		.catch (err) ->
+			assert.equal err.message.indexOf('un_defined'), 21
+		.done ->
+			tdone()
+
 	it 'the db should rollback properly', (tdone) ->
 		jdb.exec
 			command: (db) ->

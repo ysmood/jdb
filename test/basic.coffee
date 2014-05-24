@@ -12,6 +12,16 @@ jdb = new (require '../') {
 describe 'set value', ->
 	it 'should work without error', (tdone) ->
 		jdb.exec
+			command: (db) ->
+				db.doc.a = 10
+				db.save()
+			callback: (err) ->
+				# throw err if err
+				tdone()
+
+describe 'set value via data', ->
+	it 'should work without error', (tdone) ->
+		jdb.exec
 			data: 10
 			command: (db, data) ->
 				db.doc.a = data
@@ -21,15 +31,15 @@ describe 'set value', ->
 				throw err if err
 				tdone()
 
-describe 'set value', ->
+describe 'test promise', ->
 	it 'should work without error', (tdone) ->
 		jdb.exec
-			command: (db) ->
-				db.doc.a = 10
-				db.save()
-			callback: (err) ->
-				# throw err if err
-				tdone()
+			data: 10
+			command: (db, data) ->
+				db.send db.doc.a
+		.done (data) ->
+			assert.equal data, 10
+			tdone()
 
 describe 'get value', ->
 	it 'should work without error', (tdone) ->

@@ -11,6 +11,8 @@ It uses json to decrease javascript code commands.
 
 * Light weight.
 
+* Promise support.
+
 * Use full functioned javascript to operate your data, no steep learning curve.
 
 * Make debugging inside the data possible.
@@ -73,9 +75,8 @@ jdb.exec
         catch e
             jdb.send '"npm install underscore" first!'
 
-    callback: (err, diff) ->
-        console.log diff # output >> [ 'h', 'e' ]
-        process.exit()
+.done (diff) ->
+  console.log diff # output >> [ 'h', 'e' ]
 
 ```
 

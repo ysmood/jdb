@@ -10,8 +10,6 @@ jdb.exec
         world
     }
     command: (jdb, data) ->
-        jdb.doc.a ?= 0
-        jdb.doc.a++
         jdb.doc.hello = data.hello
         jdb.doc.world = data.world
         jdb.save()
@@ -30,21 +28,18 @@ jdb.exec
     callback: (err, data) ->
         console.log data # output >> [ "hello", "world" ]
 
-
 # You can even load third party libs to handle with your data.
 jdb.exec
     command: (jdb) ->
         try
             _ = require 'underscore'
+
+            _.each jdb.doc, (v, k) ->
+                jdb.doc[k] = v.split('')
+
+            jdb.send _.difference(jdb.doc.hello, jdb.doc.world)
         catch e
             jdb.send '"npm install underscore" first!'
-            return
 
-        _.each jdb.doc, (v, k) ->
-            jdb.doc[k] = v.toString().split('')
-
-        jdb.send _.difference(jdb.doc.hello, jdb.doc.world)
-
-    callback: (err, diff) ->
-        console.log diff # output >> [ 'h', 'e' ]
-        jdb.exit()
+.done (diff) ->
+  console.log diff # output >> [ 'h', 'e' ]
