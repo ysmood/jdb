@@ -18,12 +18,6 @@ It uses json to decrease javascript code commands.
 * Runs in an independent process, thread safe.
 
 
-# Model
-
-The DB will create an independent child process waiting for javascript code to handle the internal json
-object, and append the json object and javascript code to permanent storage.
-
-
 # Quick start
 
 ### Installation
