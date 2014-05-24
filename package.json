@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "benchmark": "~1.0.0",
-    "microtime": "~0.6.0",
     "mocha": "~1.19.0",
     "underscore": "~1.6.0"
   }

@@ -7,6 +7,8 @@ It uses json to decrease javascript code commands.
 
 # Features
 
+* Super fast ([see the benchmark](#benchmarks)).
+
 * Light weight.
 
 * Use full functioned javascript to operate your data, no steep learning curve.
@@ -173,17 +175,21 @@ jdb.exec
   Exit the database process.
 
 
-# Benchmarks
+# Benchmarks <a name='benchmarks'></a>
 
-### Intel Core i7 2.3GHz
+To run the benchmark:
 
-* insert x 1,071 ops/sec ±174.38% (73 runs sampled)
-* query x 7,727 ops/sec ±1.83% (78 runs sampled)
+    `cake benchmark`
 
-### Intel Core i5 2.60GHz
+### Intel Core i7 2.3GHz SSD
 
-* insert x 531 ops/sec ±165.52% (43 runs sampled)
-* query x 2,535 ops/sec ±2.20% (78 runs sampled)
+* insert x 9,152 ops/sec ±2.21% (79 runs sampled)
+* query x 115,696 ops/sec ±2.22% (72 runs sampled)
+
+### Digitalocean VPS 1 CPU
+
+* insert x 5,147 ops/sec ±3.30% (84 runs sampled)
+* query x 45,137 ops/sec ±4.67% (77 runs sampled)
 
 # License
 
