@@ -5,6 +5,8 @@ db_path = 'test/baisc.db'
 jdb = new (require '../') {
 	db_path
 	compact_db_file: false
+	error: (err) ->
+		console.error err
 }
 
 describe 'set value', ->

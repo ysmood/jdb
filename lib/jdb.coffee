@@ -80,7 +80,6 @@ class JDB.Jdb then constructor: (options) ->
 			else if error
 				throw error
 
-		exit: ->
 	}
 
 	fs = require 'fs'
@@ -91,7 +90,7 @@ class JDB.Jdb then constructor: (options) ->
 		opts: {
 			db_path: 'jdb.db'
 			compact_db_file: true
-			callback: null
+			error: null
 		}
 
 		doc: {}
@@ -123,8 +122,8 @@ class JDB.Jdb then constructor: (options) ->
 			catch err
 				error = err
 
-			if ego.opts.callback
-				ego.opts.callback error
+			if ego.opts.error
+				ego.opts.error error
 			else if error
 				throw error
 

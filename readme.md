@@ -96,6 +96,10 @@ jdb.exec
 
            Boolean. Whether to compact db file before start up or not.
 
+         * **error**
+
+           The error handler when initializing database.
+
 * ### exec (options)
 
   `options` is an object, here are its member list.
@@ -158,15 +162,6 @@ jdb.exec
 * ### compact_db_file (callback)
 
   Reduce the size of the database file. It will calc all the commands and save the final `doc` object to the file and delete all the other commands.
-
-* ### uncaught_exception (msg)
-  Override it if you want to command error yourself. The default behavior is just log the `msg` object out.
-
-* ### db_file_error (msg)
-  Override it if you want to command error yourself. The default behavior is just log the `msg` object out.
-
-* ### exit ()
-  Exit the database process.
 
 
 # Benchmarks <a name='benchmarks'></a>
