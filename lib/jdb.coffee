@@ -8,7 +8,7 @@ class JDB.Jdb then constructor: (options) ->
 	self = {
 
 		exec: (opts) ->
-			deferred = Q.defer()
+			deferred = Q.defer() if ego.opts.promise
 
 			if not opts.command
 				return
@@ -25,7 +25,7 @@ class JDB.Jdb then constructor: (options) ->
 						is_sent = true
 
 					opts.callback? null, data
-					deferred.resolve data
+					deferred.resolve data if ego.opts.promise
 
 				save: (data) ->
 					return if is_rolled_back
@@ -53,9 +53,9 @@ class JDB.Jdb then constructor: (options) ->
 				if opts.callback
 					opts.callback err
 				else
-					deferred.reject err
+					deferred.reject err if ego.opts.promise
 
-			return deferred.promise
+			return deferred.promise if ego.opts.promise
 
 		compact_db_file: (callback) ->
 			try
@@ -86,6 +86,7 @@ class JDB.Jdb then constructor: (options) ->
 		opts: {
 			db_path: 'jdb.db'
 			compact_db_file: true
+			promise: false
 			error: null
 		}
 

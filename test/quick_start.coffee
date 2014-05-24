@@ -1,4 +1,4 @@
-jdb = new (require '../')
+jdb = new (require '../') { promise: true }
 
 
 # The data to play with.

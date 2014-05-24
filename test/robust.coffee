@@ -3,7 +3,10 @@ assert = require 'assert'
 
 db_path = 'test/robust.db'
 
-jdb = new (require '../') { db_path }
+jdb = new (require '../') {
+	db_path
+	promise: true
+}
 
 describe 'Handle exception', ->
 	it 'the error should be catched properly', (tdone) ->

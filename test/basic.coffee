@@ -5,6 +5,7 @@ db_path = 'test/baisc.db'
 jdb = new (require '../') {
 	db_path
 	compact_db_file: false
+	promise: true
 	error: (err) ->
 		console.error err
 }
