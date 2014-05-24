@@ -28,12 +28,15 @@ class JDB.Jdb then constructor: (options) ->
 						ego.opts.db_path
 						"(#{opts.command})(jdb, #{JSON.stringify(opts.data)});\n"
 						(err) ->
-							if not is_sent
-								if err
-									jdb.rollback()
-									jdb.send err
+							if err
+								jdb.rollback()
+								if not opts.callback
+									throw err
 								else
-									jdb.send data
+									is_sent = true
+									opts.callback err
+							else if not is_sent
+								jdb.send data
 					)
 
 				rollback: ->
