@@ -190,18 +190,20 @@ To run the benchmark:
 
 ### MongoDB on Intel Core i7 2.3GHz SSD
 
-<span style='color: #ef2118;'>JDB is much faster than MongoDB</span>
+**JDB is much faster than MongoDB**
 
 * insert x 3,744 ops/sec ±2.63% (76 runs sampled)
 * query x 2,416 ops/sec ±3.89% (70 runs sampled)
 
 ### JDB on Digitalocean VPS 1 CPU
 
+**Even on a much slower machine JDB is still much faster than MongoDB**
+
 * insert x 7,286 ops/sec ±2.77% (77 runs sampled)
 * query x 43,240 ops/sec ±3.07% (78 runs sampled)
 
 # License
 
-## BSD
+### BSD
 
 May 2014, Yad Smood
