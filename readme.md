@@ -69,7 +69,7 @@ jdb.exec
         jdb.doc.ys = data
         jdb.save 'saved'
     callback: (err, data) ->
-        console.log data
+        console.log data # output >> saved
 
 
 # Don't do something like this!
@@ -96,7 +96,8 @@ jdb.exec
             { match: jselect } = require 'JSONSelect'
             sift = require 'sift'
         catch e
-            jdb.send '"npm install JSONSelect sift" first!'
+            console.error '"npm install JSONSelect sift" first!'
+            return
 
         jdb.send {
             JSONSelect: jselect(
@@ -108,7 +109,7 @@ jdb.exec
         }
 # Here we use promise to get the callback data.
 .done (result) ->
-    console.log result.JSONSelect # output >> [ 10, 8, 6, 180, 68 ]
+    console.log result.JSONSelect   # output >> [ 10, 8, 6, 180, 68 ]
     console.log result.mongodb_like # output >> [ { name: 'Chinese', level: 10 } ]
 
 ```
