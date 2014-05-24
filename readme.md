@@ -183,12 +183,19 @@ To run the benchmark:
 
     `cake benchmark`
 
-### Intel Core i7 2.3GHz SSD
+### JDB on Intel Core i7 2.3GHz SSD
 
 * insert x 15,719 ops/sec ±3.03% (76 runs sampled)
 * query x 123,143 ops/sec ±1.52% (81 runs sampled)
 
-### Digitalocean VPS 1 CPU
+### MongoDB on Intel Core i7 2.3GHz SSD
+
+<span style='color: #ef2118;'>JDB is much faster than MongoDB</span>
+
+* insert x 3,744 ops/sec ±2.63% (76 runs sampled)
+* query x 2,416 ops/sec ±3.89% (70 runs sampled)
+
+### JDB on Digitalocean VPS 1 CPU
 
 * insert x 7,286 ops/sec ±2.77% (77 runs sampled)
 * query x 43,240 ops/sec ±3.07% (78 runs sampled)
