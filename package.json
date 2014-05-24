@@ -1,10 +1,12 @@
 {
   "name": "jdb",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A database that hacks.",
   "main": "app.js",
   "scripts": {
-    "test": "cake test"
+    "test": "cake test",
+    "prepublish": "cake build",
+    "publish": "cake publish_done"
   },
   "repository": {
     "type": "git",
@@ -21,11 +23,12 @@
   },
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
-    "coffee-script": "~1.7.1",
     "q": "^1.0.1"
   },
   "devDependencies": {
     "benchmark": "~1.0.0",
+    "coffee-script": "~1.7.1",
+    "glob": "^4.0.0",
     "mocha": "~1.19.0",
     "underscore": "~1.6.0"
   }

@@ -2,3 +2,4 @@ benchmark
 test
 Cakefile
 .gitignore
+*.coffee

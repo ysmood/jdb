@@ -1,5 +1,6 @@
 require 'coffee-script/register'
 fs = require 'fs'
+glob = require 'glob'
 { spawn } = require 'child_process'
 
 get_right_bin = (cmd) ->
@@ -37,3 +38,20 @@ task 'benchmark', 'Performance benchmark', ->
 	], {
 		stdio: 'inherit'
 	}
+
+task 'build', 'Compile coffee to js', ->
+	console.log ">> Compile coffee..."
+
+	spawn coffee_bin, [
+		'-c'
+		'lib'
+	], {
+		stdio: 'inherit'
+	}
+
+task 'publish_done', 'Clean js', ->
+	console.log ">> Clean js..."
+
+	glob.sync 'lib/**/*.js', (err, paths) ->
+		for path in paths
+			fs.unlinkSync path
