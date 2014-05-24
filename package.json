@@ -1,6 +1,6 @@
 {
   "name": "jdb",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A database that hacks.",
   "main": "app.js",
   "scripts": {
