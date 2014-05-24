@@ -1,10 +1,15 @@
 
 class JDB.Jdb then constructor: (options) ->
 
+	fs = require 'fs'
+	Q = require 'q'
+
 	# Public
 	self = {
 
 		exec: (opts) ->
+			deferred = Q.defer()
+
 			if not opts.command
 				return
 
@@ -20,6 +25,7 @@ class JDB.Jdb then constructor: (options) ->
 						is_sent = true
 
 					opts.callback? null, data
+					deferred.resolve data
 
 				save: (data) ->
 					return if is_rolled_back
@@ -30,11 +36,11 @@ class JDB.Jdb then constructor: (options) ->
 						(err) ->
 							if err
 								jdb.rollback()
-								if not opts.callback
-									throw err
-								else
-									is_sent = true
+								if opts.callback
 									opts.callback err
+								else
+									deferred.reject err
+								is_sent = true
 							else if not is_sent
 								jdb.send data
 					)
@@ -56,8 +62,10 @@ class JDB.Jdb then constructor: (options) ->
 
 				if opts.callback
 					opts.callback err
-				else if err
-					throw err
+				else
+					deferred.reject err
+
+			return deferred.promise
 
 		compact_db_file: (callback) ->
 			try
@@ -81,8 +89,6 @@ class JDB.Jdb then constructor: (options) ->
 				throw error
 
 	}
-
-	fs = require 'fs'
 
 	# Private
 	ego = {
