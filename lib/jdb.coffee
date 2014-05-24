@@ -29,8 +29,8 @@ class JDB.Jdb then constructor: (options) ->
 						"(#{opts.command})(jdb, #{JSON.stringify(opts.data)});\n"
 						(err) ->
 							if not is_sent
-								jdb.rollback()
 								if err
+									jdb.rollback()
 									jdb.send err
 								else
 									jdb.send data
