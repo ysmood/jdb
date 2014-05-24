@@ -213,6 +213,14 @@ Though for MongoDB and Redis, most of their CPU time is ate by their DB adapters
 for some small projects, such as personal blog, or a non-cluster application, the adapter issue
 should also be taken into consideration.
 
+# Road Map
+
+* More fault tolerance support. Such as file system error handling.
+
+* Remote interface.
+
+* Maybe simple cluster support.
+
 # License
 
 ### BSD
