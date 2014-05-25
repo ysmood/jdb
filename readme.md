@@ -130,7 +130,7 @@ Start server at port 8081.
 
     jdb -p 8081
 
-JDB action `exec` only accepts raw `json` http `POST` request (do not url-encode the body!). For example:
+JDB action `exec` only accepts raw `json` http request (do not url-encode the body!). For example:
 
     POST /exec HTTP/1.1
     Host: 127.0.0.1:8081
@@ -145,6 +145,10 @@ JDB action `compact_db_file` example:
 
     GET /compact_db_file HTTP/1.1
     Host: 127.0.0.1:8081
+
+It will return:
+
+    OK
 
 
 # API

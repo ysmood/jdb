@@ -67,9 +67,6 @@ class JDB.Server then constructor: ->
 			ht = { req, res }
 
 			switch req.url
-				when '/favicon.ico'
-					ego.favicon ht
-
 				when '/exec'
 					ego.exec ht
 
@@ -89,43 +86,36 @@ class JDB.Server then constructor: ->
 			}
 			ht.res.end body
 
-		favicon: (ht) ->
-			smallest_gif = new Buffer('R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', 'base64')
-			ego.send ht, smallest_gif, 200, 'image/x-icon'
-
 		exec: (ht) ->
-			if ht.req.method != "POST"
-				ego.not_found ht
-			else
-				body = ''
-				ht.req.on 'data', (chunk) -> body += chunk
-				ht.req.on 'end', ->
-					try
-						cmd = JSON.parse body
-					catch e
-						ego.send ht, "JSON syntax error: \n" + body, 500
-						return
+			body = ''
+			ht.req.on 'data', (chunk) -> body += chunk
+			ht.req.on 'end', ->
+				try
+					cmd = JSON.parse body
+				catch e
+					ego.send ht, "JSON syntax error: \n" + body, 500
+					return
 
-					if not cmd.command
-						ego.send ht, 'Empty command', 403
-						return
+				if not cmd.command
+					ego.send ht, 'Empty command', 403
+					return
 
-					try
-						command = eval "(#{cmd.command})"
-					catch e
-						ego.send ht, 'Command syntax error: \n' + cmd.command, 500
-						return
+				try
+					command = eval "(#{cmd.command})"
+				catch e
+					ego.send ht, 'Command syntax error: \n' + cmd.command, 500
+					return
 
-					ego.jdb.exec
-						data: cmd.data
-						command: command
-						callback: (err, data) ->
-							if err
-								ego.send ht, JSON.stringify(
-									{ error: err.message }
-								), 500
-							else
-								ego.send ht, JSON.stringify(data)
+				ego.jdb.exec
+					data: cmd.data
+					command: command
+					callback: (err, data) ->
+						if err
+							ego.send ht, JSON.stringify(
+								{ error: err.message }
+							), 500
+						else
+							ego.send ht, JSON.stringify(data)
 
 		compact_db_file: (ht) ->
 			ego.jdb.compact_db_file (err) ->
