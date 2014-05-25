@@ -76,7 +76,7 @@ class JDB.Server then constructor: ->
 				else
 					ego.not_found ht
 
-		log: (msg) ->
+		log: (msg, level = 0) ->
 			console.log ">>", msg
 
 		send: (ht, body = '', status = 200, type = 'application/json') ->
@@ -100,7 +100,8 @@ class JDB.Server then constructor: ->
 					try
 						cmd = JSON.parse body
 					catch e
-						ego.log e
+						ego.send ht, "JSON syntax error: \n" + body, 500
+						return
 
 					if not cmd.command
 						ego.send ht, 'Empty command', 403
