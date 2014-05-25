@@ -52,10 +52,43 @@ class JDB.Server then constructor: ->
 			defaults commander
 
 		init_server: ->
-			net = require 'net'
-			ego.server = new net.Server
+			http = require 'http'
+			ego.server = http.createServer ego.init_routes
 			ego.server.listen ego.opts.port, ego.opts.host
 
+			console.log ">> Listen: #{ego.opts.host}:#{ego.opts.port}"
+
+		init_routes: (req, res) ->
+			console.log req.url
+
+			ht = { req, res }
+
+			switch req.url
+				when '/favicon.ico'
+					ego.favicon ht
+
+				when '/exec'
+					ego.exec ht
+
+				else
+					ego.not_found ht
+
+		send: (ht, body = '', status = 200, type = 'application/json') ->
+			ht.res.writeHead status, {
+				'Content-Type': type
+				'Content-Length': body.length
+			}
+			ht.res.end body
+
+		favicon: (ht) ->
+			smallest_gif = new Buffer('R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', 'base64')
+			ego.send ht, smallest_gif, 200, 'image/x-icon'
+
+		exec: (ht) ->
+			ego.send ht, 'jdb'
+
+		not_found: (ht) ->
+			ego.send ht, 'not found', 404
 	}
 
 	for k, v of self
