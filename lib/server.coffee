@@ -128,7 +128,7 @@ class JDB.Server then constructor: ->
 								ego.send ht, JSON.stringify(data)
 
 		compact_db_file: (ht) ->
-			ego.compact_db_file (err) ->
+			ego.jdb.compact_db_file (err) ->
 				if err
 					ego.send ht, JSON.stringify(
 						{ error: err.message }
