@@ -24,6 +24,9 @@ class JDB.Server then constructor: ->
 
 		init: ->
 			ego.init_options()
+
+			ego.jdb = new JDB.Jdb ego.opts
+
 			ego.init_server()
 
 		init_options: ->
@@ -56,10 +59,10 @@ class JDB.Server then constructor: ->
 			ego.server = http.createServer ego.init_routes
 			ego.server.listen ego.opts.port, ego.opts.host
 
-			console.log ">> Listen: #{ego.opts.host}:#{ego.opts.port}"
+			ego.log "Listen: #{ego.opts.host}:#{ego.opts.port}"
 
 		init_routes: (req, res) ->
-			console.log req.url
+			ego.log req.url
 
 			ht = { req, res }
 
@@ -73,6 +76,9 @@ class JDB.Server then constructor: ->
 				else
 					ego.not_found ht
 
+		log: (msg) ->
+			console.log ">>", msg
+
 		send: (ht, body = '', status = 200, type = 'application/json') ->
 			ht.res.writeHead status, {
 				'Content-Type': type
@@ -85,7 +91,34 @@ class JDB.Server then constructor: ->
 			ego.send ht, smallest_gif, 200, 'image/x-icon'
 
 		exec: (ht) ->
-			ego.send ht, 'jdb'
+			if ht.req.method != "POST"
+				ego.not_found ht
+			else
+				body = ''
+				ht.req.on 'data', (chunk) -> body += chunk
+				ht.req.on 'end', ->
+					try
+						cmd = JSON.parse body
+					catch e
+						ego.log e
+
+					if not cmd.command
+						ego.send ht, 'Empty command', 403
+						return
+
+					try
+						command = eval "(#{cmd.command})"
+					catch e
+						ego.send ht, 'Command syntax error: \n' + cmd.command, 500
+						return
+
+					ego.jdb.exec
+						data: cmd.data
+						command: command
+						callback: (err, data) ->
+							if err
+								data = { error: err.message }
+							ego.send ht, JSON.stringify(data)
 
 		not_found: (ht) ->
 			ego.send ht, 'not found', 404
