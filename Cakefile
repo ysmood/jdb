@@ -14,6 +14,7 @@ get_right_bin = (cmd) ->
 
 coffee_bin = get_right_bin 'node_modules/.bin/coffee'
 mocha_bin = get_right_bin 'node_modules/.bin/mocha'
+forever_bin = get_right_bin 'node_modules/.bin/forever'
 
 task 'test', 'Basic test', ->
 	spawn mocha_bin, [
@@ -55,3 +56,13 @@ task 'clean', 'Clean js', ->
 	glob.sync 'lib/**/*.js', (err, paths) ->
 		for path in paths
 			fs.unlinkSync path
+
+task 'dev', 'Start test server', ->
+	spawn forever_bin, [
+		'--minUptime', 10
+		'--spinSleepTime', 10
+		'-w'
+		'./bin/jdb.js'
+	], {
+		stdio: 'inherit'
+	}

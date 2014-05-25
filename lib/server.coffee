@@ -24,6 +24,7 @@ class JDB.Server then constructor: ->
 
 		init: ->
 			ego.init_options()
+			ego.init_server()
 
 		init_options: ->
 			commander = require 'commander'
@@ -53,6 +54,7 @@ class JDB.Server then constructor: ->
 		init_server: ->
 			net = require 'net'
 			ego.server = new net.Server
+			ego.server.listen ego.opts.port, ego.opts.host
 
 	}
 
