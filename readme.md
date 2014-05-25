@@ -116,7 +116,7 @@ jdb.exec
 
 # Http server quick start
 
-Too allow JDB to serve multiple clients, you can start it as a http server.
+To allow JDB to serve multiple clients, you can start it as a http server.
 
 Install `jdb` globally.
 
