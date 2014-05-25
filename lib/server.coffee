@@ -73,6 +73,9 @@ class JDB.Server then constructor: ->
 				when '/exec'
 					ego.exec ht
 
+				when '/compact_db_file'
+					ego.compact_db_file ht
+
 				else
 					ego.not_found ht
 
@@ -118,8 +121,20 @@ class JDB.Server then constructor: ->
 						command: command
 						callback: (err, data) ->
 							if err
-								data = { error: err.message }
-							ego.send ht, JSON.stringify(data)
+								ego.send ht, JSON.stringify(
+									{ error: err.message }
+								), 500
+							else
+								ego.send ht, JSON.stringify(data)
+
+		compact_db_file: (ht) ->
+			ego.compact_db_file (err) ->
+				if err
+					ego.send ht, JSON.stringify(
+						{ error: err.message }
+					), 500
+				else
+					ego.send ht, 'OK'
 
 		not_found: (ht) ->
 			ego.send ht, 'not found', 404

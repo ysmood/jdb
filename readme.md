@@ -114,6 +114,38 @@ jdb.exec
 
 ```
 
+# Http server quick start
+
+Too allow JDB to serve multiple clients, you can start it as a http server.
+
+Install `jdb` globally.
+
+    npm install -g jdb
+
+See help info.
+
+    jdb -h
+
+Start server at port 8081.
+
+    jdb -p 8081
+
+JDB action `exec` only accepts raw `json` http `POST` request (don not url encode the body!). For example:
+
+    POST /exec HTTP/1.1
+    Host: 127.0.0.1:8081
+
+    { "data": 10, "command": "function(jdb, data) { jdb.doc.a = 1; jdb.save(jdb.doc.a); }" }
+
+It will return json:
+
+    {"a":1}
+
+JDB action `compact_db_file` example:
+
+    GET /compact_db_file HTTP/1.1
+    Host: 127.0.0.1:8081
+
 
 # API
 
