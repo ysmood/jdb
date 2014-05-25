@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
+    "commander": "~2.2.0",
     "q": "~1.0.1"
   },
   "devDependencies": {
