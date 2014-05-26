@@ -1,6 +1,5 @@
 benchmark
 test
-Cakefile
 *.db
 .*
 *.md
