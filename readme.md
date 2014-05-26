@@ -165,11 +165,11 @@ It will return:
 
          * **compact_db_file**
 
-           Boolean. Whether to compact db file before start up or not.
+           Boolean. Whether to compact db file before start up or not. Default true.
 
          * **promise**
 
-           Boolean. Whether to enable promise or not.
+           Boolean. Whether to enable promise or not. Default false.
 
          * **error**
 
