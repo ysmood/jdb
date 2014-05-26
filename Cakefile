@@ -59,8 +59,8 @@ task 'clean', 'Clean js', ->
 
 task 'dev', 'Start test server', ->
 	spawn forever_bin, [
-		'--minUptime', 10
-		'--spinSleepTime', 10
+		'--minUptime', 1000
+		'--spinSleepTime', 1000
 		'-w'
 		'./bin/jdb.js'
 	], {
