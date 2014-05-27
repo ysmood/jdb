@@ -136,6 +136,7 @@ JDB action `exec` only accepts raw `json` http request (do not url-encode the bo
 
     POST /exec HTTP/1.1
     Host: 127.0.0.1:8081
+    Content-Length: 88
 
     { "data": 10, "command": "function(jdb, data) { jdb.doc.a = 1; jdb.save(jdb.doc.a); }" }
 
