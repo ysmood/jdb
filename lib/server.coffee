@@ -36,8 +36,17 @@ class JDB.Server then constructor: ->
 			.option '-d, --db_path <path>', 'Data base file path'
 			.option '-p, --port <port>', 'Port to listen to. Default is ' + ego.opts.port, parseInt
 			.option '--host <host>', "Host to listen to. Default is #{ego.opts.host} only"
-			.option '-c, --compact_db_file', 'Whether compact db file at start up or not'
+			.option '-c, --compact_db_file <true>', 'Whether compact db file at start up or not', (data) ->
+				data == 'true'
+			.option '-v, --ver', 'Print JDB version'
 			.parse process.argv
+
+			console.log commander
+
+			if commander.ver
+				conf = require '../package'
+				console.log 'JDB v' + conf.version
+				process.exit()
 
 			if commander.args[0]
 				ego.opts.config_path = commander.args[0]
