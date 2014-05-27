@@ -17,7 +17,7 @@ It uses json to decrease javascript commands.
 
 * Make debugging inside the data possible.
 
-* Runs in an independent process, thread safe.
+* Support both standalone mode (server) and in-application mode (lib).
 
 
 # Quick start
