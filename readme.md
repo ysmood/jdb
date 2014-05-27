@@ -238,6 +238,10 @@ It will return:
 
   Reduce the size of the database file. It will calc all the commands and save the final `doc` object to the file and delete all the other commands.
 
+* ### compact_db_file_sync ()
+
+  The sync version of `compact_db_file (callback)`.
+
 
 # Benchmarks <a name='benchmarks'></a>
 

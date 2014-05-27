@@ -58,25 +58,16 @@ class JDB.Jdb then constructor: (options) ->
 			return deferred.promise if ego.opts.promise
 
 		compact_db_file: (callback) ->
-			try
-				fs.writeFileSync(
-					ego.opts.db_path
-					"""
-						var jdb = {
-							doc: #{JSON.stringify(ego.doc)},
-							send: function () {},
-							save: function () {},
-							rollback: function () {}
-						};\n
-					"""
-				)
-			catch err
-				error = err
+			fs.writeFile(
+				ego.opts.db_path
+				ego.compacted_data()
+			, callback)
 
-			if callback
-				callback error
-			else if error
-				throw error
+		compact_db_file_sync: ->
+			fs.writeFileSync(
+				ego.opts.db_path
+				ego.compacted_data()
+			)
 
 	}
 
@@ -114,9 +105,9 @@ class JDB.Jdb then constructor: (options) ->
 				ego.load_data()
 
 				if ego.opts.compact_db_file
-					self.compact_db_file()
+					self.compact_db_file_sync()
 			else
-				self.compact_db_file()
+				self.compact_db_file_sync()
 
 		load_data: ->
 			str = fs.readFileSync ego.opts.db_path, 'utf8'
@@ -130,6 +121,16 @@ class JDB.Jdb then constructor: (options) ->
 				ego.opts.error error
 			else if error
 				throw error
+
+		compacted_data: ->
+			"""
+				var jdb = {
+					doc: #{JSON.stringify(ego.doc)},
+					send: function () {},
+					save: function () {},
+					rollback: function () {}
+				};\n
+			"""
 
 	}
 
