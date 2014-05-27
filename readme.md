@@ -30,6 +30,8 @@ Install `jdb` first.
 
 ### Examples
 
+Here's the in-application mode example.
+
 ```coffeescript
 
 jdb = new (require 'jdb') { promise: true }
@@ -116,7 +118,7 @@ jdb.exec
 
 # Http server quick start
 
-To allow JDB to serve multiple clients, you can start it as a http server.
+To allow JDB to serve multiple clients, you can start it as a http server (standalone mode).
 
 Install `jdb` globally.
 
