@@ -2,8 +2,10 @@
 
 This project aims to create a flexible database without any weird syntax or rules.
 Just few APIs will make everything work smoothly.
-It is an append-only in-memory database.
-It uses json to decrease javascript commands.
+JDB is an append-only, in-memory, non-block IO database.
+
+It uses json to decrease database file size, which means after all javascript commands are executed,
+they will become a single json object.
 
 
 # Features
