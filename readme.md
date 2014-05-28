@@ -249,16 +249,18 @@ It will return:
 
 # Unit test
 
+To use `cake`, install [coffee-script](coffeescript.org) globally: `npm install -g coffee-script`.
+
 Unit test will test all the basic functions of JDB. Before your pull request, run it first.
 
-    `cake test`
+    cake test
 
 
 # Benchmarks <a name='benchmarks'></a>
 
 To run the benchmark:
 
-    `cake benchmark`
+    cake benchmark
 
 ### JDB on Intel Core i7 2.3GHz SSD
 
