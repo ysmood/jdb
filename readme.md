@@ -249,7 +249,7 @@ It will return:
 
 # Unit test
 
-Unit test will test all the basic functions of JDB. Before you pull request, run it first.
+Unit test will test all the basic functions of JDB. Before your pull request, run it first.
 
     `cake test`
 
