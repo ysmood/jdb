@@ -1,9 +1,10 @@
 # Overview
 
-This project aims to create a flexible database that won't try to create any weird syntax or rules.
+This project aims to create a flexible database without any weird syntax or rules.
 Just few APIs will make everything work smoothly.
 It is an append-only in-memory database.
 It uses json to decrease javascript commands.
+
 
 # Features
 
@@ -246,6 +247,13 @@ It will return:
   The sync version of `compact_db_file (callback)`.
 
 
+# Unit test
+
+Unit test will test all the basic functions of JDB. Before you pull request, run it first.
+
+    `cake test`
+
+
 # Benchmarks <a name='benchmarks'></a>
 
 To run the benchmark:
@@ -285,8 +293,6 @@ should also be taken into consideration.
 # Road Map
 
 * More fault tolerance support. Such as file system error handling.
-
-* Remote interface.
 
 * Maybe simple cluster support.
 
