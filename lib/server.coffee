@@ -41,8 +41,6 @@ class JDB.Server then constructor: ->
 			.option '-v, --ver', 'Print JDB version'
 			.parse process.argv
 
-			console.log commander
-
 			if commander.ver
 				conf = require '../package'
 				console.log 'JDB v' + conf.version
@@ -71,8 +69,6 @@ class JDB.Server then constructor: ->
 			ego.log "Listen: #{ego.opts.host}:#{ego.opts.port}"
 
 		init_routes: (req, res) ->
-			ego.log req.url
-
 			ht = { req, res }
 
 			switch req.url
@@ -124,7 +120,7 @@ class JDB.Server then constructor: ->
 								{ error: err.message }
 							), 500
 						else
-							ego.send ht, JSON.stringify(data)
+							ego.send ht, JSON.stringify(data or 'ok')
 
 		compact_db_file: (ht) ->
 			ego.jdb.compact_db_file (err) ->
