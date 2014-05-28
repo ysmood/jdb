@@ -290,6 +290,10 @@ To run the benchmark:
 * insert x 7,286 ops/sec ±2.77% (77 runs sampled)
 * query x 43,240 ops/sec ±3.07% (78 runs sampled)
 
+### JDB http server on Intel Core i7 2.3GHz SSD
+
+* exec x 65,912 ops/sec ±2.84% (72 runs sampled)
+
 Though for MongoDB and Redis, most of their CPU time is ate by their DB adapters, but I think
 for some small projects, such as personal blog, or a non-cluster application, the adapter issue
 should also be taken into consideration.
