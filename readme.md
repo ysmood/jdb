@@ -192,8 +192,8 @@ It will return:
   * **command (jdb)**
 
       A function or corresponding source code.
-      The code in this function is in another process.
-      You can't share variable within it.
+      The code in this function is in another scope (database file scope).
+      Do not share outer variable within it, see the wrong example in quick start part.
 
       #### jdb
 
@@ -201,7 +201,7 @@ It will return:
 
       * **data**
 
-         The `data` object that sent from the `exec (options)`.
+         The `data` object that is sent from the `exec (options)`.
 
       * **doc**
 
@@ -209,7 +209,7 @@ It will return:
 
       * **save([data])**
 
-         When your data manipulation is done, call this method to permanent your change. It will auto call the send for you.
+         When your data manipulation is done, call this method to permanent your change. It will automatically call the send for you.
 
          * **data**
 
@@ -221,7 +221,7 @@ It will return:
 
          * **data**
 
-             Type is `Object`. Only the serializable part of the object will be sent.
+             Type is `Object`. It should be serializable.
 
       * **rollback()**
 
@@ -229,7 +229,7 @@ It will return:
 
   * **callback (err, data)**
 
-     This function will be invoked when the `send` function is called asynchronous.
+     This function will be invoked after the `save` or `send` is called.
 
       * **err**
 
@@ -242,7 +242,7 @@ It will return:
 
 * ### compact_db_file (callback)
 
-  Reduce the size of the database file. It will calc all the commands and save the final `doc` object to the file and delete all the other commands.
+  Reduce the size of the database file. It will calculate all the commands and save the final `doc` object to the file and delete all the other commands.
 
 * ### compact_db_file_sync ()
 
