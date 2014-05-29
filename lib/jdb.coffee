@@ -58,10 +58,21 @@ class JDB.Jdb then constructor: (options) ->
 			return deferred.promise if ego.opts.promise
 
 		compact_db_file: (callback) ->
+			deferred = Q.defer() if ego.opts.promise
+
 			fs.writeFile(
 				ego.opts.db_path
 				ego.compacted_data()
-			, callback)
+			, (err) ->
+				if ego.opts.promise
+					if err
+						deferred.reject err
+					else
+						deferred.resolve()
+				callback? err
+			)
+
+			return deferred.promise if ego.opts.promise
 
 		compact_db_file_sync: ->
 			fs.writeFileSync(
