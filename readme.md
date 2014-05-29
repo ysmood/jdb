@@ -1,6 +1,7 @@
 # Overview
 
-This project aims to create a flexible database without any weird syntax or rules.
+This project is inspired by [nedb](https://github.com/louischatriot/nedb).
+It aims to create a flexible database without any weird syntax or rules.
 Just few APIs will make everything work smoothly.
 JDB is an append-only, in-memory, non-block IO database.
 
