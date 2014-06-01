@@ -8,6 +8,8 @@ JDB is an append-only, in-memory, non-block IO database.
 It uses json to decrease database file size, which means after all javascript commands are executed,
 they will become a single json object.
 
+For further infomation goto [How it works?](#how_it_works)
+
 
 # Features
 
@@ -156,6 +158,13 @@ JDB action `compact_db_file` example:
 It will return:
 
     OK
+
+
+# How it works? <a name="#how_it_works"></a>
+
+It simply executes all your js code and manipulate a `doc` object, while append each
+js code to a file. Everytime when you start up the JDB, it executes all the code in the file,
+and the last time's `doc` object will come back again.
 
 
 # API
