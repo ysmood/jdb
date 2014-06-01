@@ -14,7 +14,6 @@ class JDB.Jdb then constructor: (options) ->
 				return
 
 			is_sent = false
-
 			is_rolled_back = false
 
 			jdb = {
@@ -42,7 +41,7 @@ class JDB.Jdb then constructor: (options) ->
 
 			Object.defineProperty jdb, 'doc', {
 				get: -> ego.doc
-				set: -> console.error ">> Error: 'jdb.doc' is readonly."
+				set: -> throw new Error("'jdb.doc' is readonly.")
 			}
 
 			try
