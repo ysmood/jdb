@@ -32,7 +32,7 @@ class JDB.Server then constructor: ->
 		init_options: ->
 			commander = require 'commander'
 			commander
-			.usage '[options] [config_path.json or config_path.js]'
+			.usage '[options] [config.json or config.js]'
 			.option '-d, --db_path <path>', 'Data base file path'
 			.option '-p, --port <port>', 'Port to listen to. Default is ' + ego.opts.port, parseInt
 			.option '--host <host>', "Host to listen to. Default is #{ego.opts.host} only"
