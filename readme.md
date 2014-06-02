@@ -276,8 +276,8 @@ To run the benchmark:
 
 ### JDB on Intel Core i7 2.3GHz SSD
 
-* insert x 15,719 ops/sec ±3.03% (76 runs sampled)
-* query x 123,143 ops/sec ±1.52% (81 runs sampled)
+* insert x 15,562 ops/sec ±4.37% (62 runs sampled)
+* query x 665,237 ops/sec ±0.83% (95 runs sampled)
 
 ### MongoDB on Intel Core i7 2.3GHz SSD
 
@@ -288,7 +288,7 @@ To run the benchmark:
 
 ### Redis on Intel Core i7 2.3GHz SSD
 
-**JDB's query performance is 12 times faster than Redis**
+**JDB's query performance is faster than Redis**
 
 * insert x 10,619 ops/sec ±2.33% (77 runs sampled)
 * query x 10,722 ops/sec ±2.27% (80 runs sampled)
@@ -297,8 +297,8 @@ To run the benchmark:
 
 **Even on a much slower machine JDB is still much faster than MongoDB**
 
-* insert x 7,286 ops/sec ±2.77% (77 runs sampled)
-* query x 43,240 ops/sec ±3.07% (78 runs sampled)
+* insert x 9,460 ops/sec ±3.34% (78 runs sampled)
+* query x 343,502 ops/sec ±2.57% (93 runs sampled)
 
 ### JDB http server on Intel Core i7 2.3GHz SSD
 
