@@ -8,41 +8,10 @@ class JDB.Jdb then constructor: (options) ->
 	self = {
 
 		exec: (opts) ->
-			deferred = Q.defer() if ego.opts.promise
-
 			if not opts.command
 				return
 
-			is_sent = false
-			is_rolled_back = false
-
-			jdb = {
-				send: (data) ->
-					if is_sent
-						return
-					else
-						is_sent = true
-
-					opts.callback? null, data
-					deferred.resolve data if ego.opts.promise
-
-				save: (data) ->
-					return if is_rolled_back
-
-					ego.db_file.write(
-						"(#{opts.command})(jdb, #{JSON.stringify(opts.data)});\n"
-						-> jdb.send data
-					)
-
-				rollback: ->
-					ego.load_data()
-					is_rolled_back = true
-			}
-
-			Object.defineProperty jdb, 'doc', {
-				get: -> ego.doc
-				set: -> throw new Error("'jdb.doc' is readonly.")
-			}
+			jdb = ego.generate_api opts
 
 			try
 				opts.command jdb, opts.data
@@ -52,9 +21,9 @@ class JDB.Jdb then constructor: (options) ->
 				if opts.callback
 					opts.callback err
 				else
-					deferred.reject err if ego.opts.promise
+					opts.deferred.reject err if ego.opts.promise
 
-			return deferred.promise if ego.opts.promise
+			return opts.deferred.promise if ego.opts.promise
 
 		compact_db_file: (callback) ->
 			deferred = Q.defer() if ego.opts.promise
@@ -121,6 +90,7 @@ class JDB.Jdb then constructor: (options) ->
 
 		load_data: ->
 			str = fs.readFileSync ego.opts.db_path, 'utf8'
+			jdb = ego.generate_api {}
 			try
 				eval str
 				ego.doc = jdb.doc if typeof jdb.doc == 'object'
@@ -132,15 +102,42 @@ class JDB.Jdb then constructor: (options) ->
 			else if error
 				throw error
 
+		generate_api: (opts) ->
+			if ego.opts.promise
+				opts.deferred = Q.defer()
+
+			is_sent = false
+			is_rolled_back = false
+
+			jdb = {
+				send: (data) ->
+					if is_sent
+						return
+					else
+						is_sent = true
+
+					opts.callback? null, data
+					opts.deferred.resolve data if ego.opts.promise
+
+				save: (data) ->
+					return if is_rolled_back
+
+					ego.db_file.write(
+						"(#{opts.command})(jdb, #{JSON.stringify(opts.data)});\n"
+						-> jdb.send data
+					)
+
+				rollback: ->
+					ego.load_data()
+					is_rolled_back = true
+
+				doc: ego.doc
+			}
+
+			return jdb
+
 		compacted_data: ->
-			"""
-				var jdb = {
-					doc: #{JSON.stringify(ego.doc)},
-					send: function () {},
-					save: function () {},
-					rollback: function () {}
-				};\n
-			"""
+			"jdb.doc = #{JSON.stringify(ego.doc)};\n"
 
 	}
 
