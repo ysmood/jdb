@@ -37,7 +37,7 @@ Install `jdb` first.
 
 ### Examples
 
-Here's the in-application mode example.
+Here's the embedded mode example.
 
 ```coffeescript
 
