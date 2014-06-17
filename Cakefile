@@ -68,12 +68,19 @@ task 'dev', 'Start test server', ->
 
 	start()
 
-	gaze = new (require 'gaze') [
+	[
 		'lib/*.coffee'
 		'bin/jdb.js'
-	]
+	].forEach (pattern) ->
+		paths = glob.sync pattern
 
-	gaze.on 'all', (action, path) ->
-		console.log ">> #{action}: " + path
-		ps.kill('SIGINT')
-		start()
+		paths.forEach (path) ->
+			fs.watchFile(
+				path
+				{ persistent: false, interval: 500 }
+				(curr, prev) ->
+					if curr.mtime != prev.mtime
+						console.log ">> Modified: " + path
+						ps.kill('SIGINT')
+						start()
+			)
