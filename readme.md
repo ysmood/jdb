@@ -10,6 +10,7 @@ they will become a single json object.
 
 For further infomation goto [How it works?](#how_it_works)
 
+[![Build Status](https://travis-ci.org/ysmood/jdb.svg)](https://travis-ci.org/ysmood/jdb)
 
 # Features
 
