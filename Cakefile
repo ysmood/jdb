@@ -1,6 +1,6 @@
 fs = require 'fs'
 glob = require 'glob'
-{ spawn } = require 'child_process'
+spawn = require 'win-spawn'
 
 coffee_bin = 'coffee'
 mocha_bin = 'mocha'
