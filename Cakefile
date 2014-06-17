@@ -13,7 +13,6 @@ get_right_bin = (cmd) ->
 
 coffee_bin = get_right_bin 'coffee'
 mocha_bin = get_right_bin 'mocha'
-forever_bin = get_right_bin 'forever'
 
 task 'test', 'Basic test', ->
 	spawn mocha_bin, [
