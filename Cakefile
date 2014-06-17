@@ -2,17 +2,8 @@ fs = require 'fs'
 glob = require 'glob'
 { spawn } = require 'child_process'
 
-get_right_bin = (cmd) ->
-	if process.platform == 'win32'
-		win_cmd = cmd + '.cmd'
-		if fs.existsSync win_cmd
-			cmd = win_cmd
-		else if not fs.existsSync cmd
-			cmd = which.sync(cmd)
-	return cmd
-
-coffee_bin = get_right_bin 'coffee'
-mocha_bin = get_right_bin 'mocha'
+coffee_bin = 'coffee'
+mocha_bin = 'mocha'
 
 task 'test', 'Basic test', ->
 	spawn mocha_bin, [
