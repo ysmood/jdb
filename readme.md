@@ -16,7 +16,7 @@ For further infomation goto [How it works?](#how_it_works)
 
 * Super fast ([see the benchmark](#benchmarks)).
 
-* Light weight.
+* Light weight. Core code is only about 150 lines.
 
 * Promise support.
 
