@@ -90,7 +90,11 @@ class JDB.Jdb then constructor: (options) ->
 
 		load_data: ->
 			str = fs.readFileSync ego.opts.db_path, 'utf8'
-			jdb = ego.generate_api {}
+			jdb = {
+				send: ->
+				save: ->
+				rollback: ->
+			}
 			try
 				eval str
 				ego.doc = jdb.doc if typeof jdb.doc == 'object'
