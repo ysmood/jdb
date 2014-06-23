@@ -6,21 +6,32 @@ coffee_bin = 'coffee'
 mocha_bin = 'mocha'
 
 task 'test', 'Basic test', ->
-	spawn mocha_bin, [
-		'-r'
-		'coffee-script/register'
-		'test/basic.coffee'
-	], {
-		stdio: 'inherit'
-	}
-
-	spawn mocha_bin, [
-		'-r'
-		'coffee-script/register'
-		'test/robust.coffee'
-	], {
-		stdio: 'inherit'
-	}
+	[
+		{
+			bin: mocha_bin
+			args: [
+				'-r'
+				'coffee-script/register'
+				'test/basic.coffee'
+			]
+		}
+		{
+			bin: mocha_bin
+			args: [
+				'-r'
+				'coffee-script/register'
+				'test/robust.coffee'
+			]
+		}
+		{
+			bin: coffee_bin
+			args: ['test/standalone.coffee']
+		}
+	].map (el) ->
+		spawn(el.bin, el.args, { stdio: 'inherit' })
+		.on 'exit', (code) ->
+			if code != 0
+				process.exit code
 
 task 'benchmark', 'Performance benchmark', ->
 	spawn coffee_bin, [
@@ -71,6 +82,6 @@ task 'dev', 'Start test server', ->
 				(curr, prev) ->
 					if curr.mtime != prev.mtime
 						console.log ">> Modified: " + path
-						ps.kill('SIGINT')
+						ps.exit()
 						start()
 			)
