@@ -7,54 +7,51 @@ server = null
 max_retry = 10
 retry_count = 0
 
-start_server = ->
+describe 'standalone mode test', ->
 	server = spawn(
 		'node'
 		['bin/jdb.js', '-p', port]
 		{ stdio: 'inherit' }
 	)
 
-	process.on 'SIGINT', ->
-		exit()
+	exit = ->
+		server.kill 'SIGINT'
 
-exit = (code = 0) ->
-	server.kill 'SIGINT'
-	process.exit(code)
+	it 'the server should return right value.', (done) ->
+		try_contact_api = ->
+			http = require 'http'
+			cmd = '{ "data": 10, "command": "function(jdb, data) { jdb.doc.a = 1; jdb.save(jdb.doc.a); }" }'
 
-test_api = ->
-	http = require 'http'
-	cmd = '{ "data": 10, "command": "function(jdb, data) { jdb.doc.a = 1; jdb.save(jdb.doc); }" }'
+			req = http.request {
+				host: '127.0.0.1'
+				port: port
+				path: '/exec'
+				method: 'POST'
+			}, (res) ->
+				data = ''
+				res.on 'data', (chunk) ->
+					data += chunk
 
-	req = http.request {
-		host: '127.0.0.1'
-		port: port
-		path: '/exec'
-		method: 'POST'
-	}, (res) ->
-		data = ''
-		res.on 'data', (chunk) ->
-			data += chunk
+				res.on 'end', ->
+					try
+						assert.equal data, 1
+						done()
+					catch e
+						done e
+					finally
+						exit()
 
-		res.on 'end', ->
-			if data == '{"a":1}'
-				console.log '\n>> Server test passed.'
-				exit()
-			else
-				exit(1)
+			req.on 'error', (e) ->
+				retry_count++
+				if retry_count > max_retry
+					done 'Max retried, server test failed.'
+					exit()
+					return
 
-	req.on 'error', (e) ->
-		retry_count++
-		if retry_count > max_retry
-			console.log '\n>> Max retried, server test failed.'
-			exit(1)
-			return
+				span = 200
+				setTimeout(try_contact_api, span)
+				console.log e.message, ">> Wait for #{span}ms and retry..."
 
-		span = 200
-		setTimeout(test_api, span)
-		console.log e.message, "Wait for #{span}ms and retry..."
+			req.end cmd
 
-	req.end cmd
-
-start_server()
-
-test_api()
+		try_contact_api()

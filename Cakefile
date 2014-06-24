@@ -7,28 +7,15 @@ mocha_bin = 'mocha'
 
 task 'test', 'Basic test', ->
 	[
-		{
-			bin: mocha_bin
-			args: [
-				'-r'
-				'coffee-script/register'
-				'test/basic.coffee'
-			]
-		}
-		{
-			bin: mocha_bin
-			args: [
-				'-r'
-				'coffee-script/register'
-				'test/robust.coffee'
-			]
-		}
-		{
-			bin: coffee_bin
-			args: ['test/standalone.coffee']
-		}
-	].map (el) ->
-		spawn(el.bin, el.args, { stdio: 'inherit' })
+		'test/basic.coffee'
+		'test/robust.coffee'
+		'test/standalone.coffee'
+	].map (file) ->
+		spawn(mocha_bin, [
+			'-r'
+			'coffee-script/register'
+			file
+		], { stdio: 'inherit' })
 		.on 'exit', (code) ->
 			if code != 0
 				process.exit code
