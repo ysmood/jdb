@@ -17,7 +17,7 @@ describe 'set value', ->
 				db.doc.a = 10
 				db.save()
 			callback: (err) ->
-				# throw err if err
+				tdone err if err
 				tdone()
 
 describe 'set value via data', ->
@@ -29,7 +29,7 @@ describe 'set value via data', ->
 				db.save()
 
 			callback: (err) ->
-				throw err if err
+				tdone err if err
 				tdone()
 
 describe 'test promise', ->
@@ -39,8 +39,11 @@ describe 'test promise', ->
 			command: (db, data) ->
 				db.send db.doc.a
 		.done (data) ->
-			assert.equal data, 10
-			tdone()
+			try
+				assert.equal data, 10
+				tdone()
+			catch e
+				tdone e
 
 describe 'get value', ->
 	it 'should work without error', (tdone) ->
@@ -48,19 +51,26 @@ describe 'get value', ->
 			command: (db) ->
 				db.send ++db.doc.a
 			callback: (err, data) ->
-				assert.equal 11, data
+				try
+					assert.equal 11, data
+					jdb.compact_db_file ->
+						tdone()
+				catch e
+					tdone e
 
-				jdb.compact_db_file ->
-					tdone()
 
 describe 'compact_db_file', ->
 	it 'the doc should be { a: 11 }', (tdone) ->
 		fs = require 'fs'
 		str = fs.readFileSync db_path, 'utf8'
 		eval str
-		assert.equal 11, jdb.doc.a
 
-		setTimeout(->
-			fs.unlinkSync db_path
-			tdone()
-		, 100)
+		try
+			assert.equal 11, jdb.doc.a
+			setTimeout(->
+				fs.unlinkSync db_path
+				tdone()
+			, 100)
+		catch e
+			tdone e
+

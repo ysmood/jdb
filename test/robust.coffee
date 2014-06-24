@@ -16,7 +16,7 @@ describe 'Handle exception', ->
 				db.doc.b = a
 			callback: (err) ->
 				if not err
-					throw 'error not catched'
+					tdone 'error not catched'
 				else
 					tdone()
 
@@ -25,7 +25,11 @@ describe 'Handle exception', ->
 			command: (db) ->
 				db.doc.a.un_defined = 10
 		.catch (err) ->
-			assert.equal err.message.indexOf('un_defined'), 21
+			try
+				assert.equal err.message.indexOf('un_defined'), 21
+				tdone
+			catch e
+				tdone e
 		.done ->
 			tdone()
 
@@ -34,8 +38,8 @@ describe 'Handle exception', ->
 			command: (db) ->
 				db.send db.doc.a
 			callback: (err, data) ->
-				if err or assert.equal(data, undefined)
-					throw err
+				if err or data == undefined
+					tdone err
 				else
 					setTimeout(->
 						fs.unlinkSync db_path
