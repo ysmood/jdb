@@ -5,12 +5,18 @@ spawn = require 'win-spawn'
 coffee_bin = 'coffee'
 mocha_bin = 'mocha'
 
-task 'test', 'Basic test', ->
-	[
+option '-n', '--no-server', 'Test without standalone test'
+task 'test', 'Basic test', (options) ->
+	list = [
 		'test/basic.coffee'
 		'test/robust.coffee'
 		'test/standalone.coffee'
-	].map (file) ->
+	]
+
+	if options['no-server']
+		list.splice 2, 1
+
+	list.map (file) ->
 		spawn(mocha_bin, [
 			'-r'
 			'coffee-script/register'
