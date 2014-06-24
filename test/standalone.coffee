@@ -2,7 +2,7 @@
 spawn = require 'win-spawn'
 assert = require 'assert'
 
-port = 9023
+port = 8137
 server = null
 max_retry = 10
 retry_count = 0
