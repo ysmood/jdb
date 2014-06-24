@@ -8,11 +8,11 @@ max_retry = 10
 retry_count = 0
 
 describe 'standalone mode test', ->
-	server = spawn(
-		'node'
-		['bin/jdb.js', '-p', port]
-		{ stdio: 'inherit' }
-	)
+	# server = spawn(
+	# 	'node'
+	# 	['bin/jdb.js', '-p', port]
+	# 	{ stdio: 'inherit' }
+	# )
 
 	exit = ->
 		server.kill 'SIGINT'
