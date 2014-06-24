@@ -42,15 +42,9 @@ describe 'standalone mode test', ->
 						exit()
 
 			req.on 'error', (e) ->
-				retry_count++
-				if retry_count > max_retry
-					done 'Max retried, server test failed.'
-					exit()
-					return
-
 				span = 200
 				setTimeout(try_contact_api, span)
-				console.log e.message, ">> Wait for #{span}ms and retry..."
+				console.error '>> Server:', e.message
 
 			req.end cmd
 
