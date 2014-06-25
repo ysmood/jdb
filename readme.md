@@ -8,13 +8,13 @@ JDB is an append-only, in-memory, non-block IO database.
 It uses json to decrease database file size, which means after all javascript commands are executed,
 they will become a single json object.
 
-For further infomation goto [How it works?](#how_it_works)
+For further infomation goto [How it works?](#user-content-how-it-works)
 
 [![Build Status](https://travis-ci.org/ysmood/jdb.svg)](https://travis-ci.org/ysmood/jdb) [![Build status](https://ci.appveyor.com/api/projects/status/ivsm326en792xsnj)](https://ci.appveyor.com/project/ysmood/jdb)
 
 # Features
 
-* Super fast ([see the benchmark](#benchmarks)).
+* Super fast ([see the benchmark](#user-content-benchmarks)).
 
 * Light weight. Core code is only about 150 lines.
 
@@ -161,7 +161,7 @@ It will return:
     OK
 
 
-# How it works? <a name="#how_it_works"></a>
+# How it works?
 
 It simply executes all your js code to manipulate a `doc` object, and append each
 js code to a file. Each time when you start up the JDB, it executes all the code in the file,
@@ -269,7 +269,7 @@ Unit test will test all the basic functions of JDB. Before your pull request, ru
     cake test
 
 
-# Benchmarks <a name='benchmarks'></a>
+# Benchmarks
 
 To run the benchmark:
 
