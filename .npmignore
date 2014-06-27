@@ -1,6 +1,6 @@
 benchmark
 test
 Cakefile
-.gitignore
+.*
 *.coffee
 *.db
