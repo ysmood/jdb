@@ -8,7 +8,6 @@ environment:
 
 install:
   - npm update -g npm
-  - npm install -g coffee-script mocha
   - npm install
 
 test_script:
