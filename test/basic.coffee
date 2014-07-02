@@ -1,4 +1,5 @@
 assert = require 'assert'
+fs = require 'fs'
 
 db_path = 'test/baisc.db'
 
@@ -7,11 +8,13 @@ jdb = new (require '../') {
 	compact_db_file: false
 	promise: true
 	error: (err) ->
-		console.error err
+		if err
+			console.error err
+			process.exit 1
 }
 
-describe 'set value', ->
-	it 'should work without error', (tdone) ->
+describe 'Basic: ', ->
+	it 'set value should work', (tdone) ->
 		jdb.exec
 			command: (db) ->
 				db.doc.a = 10
@@ -20,8 +23,7 @@ describe 'set value', ->
 				tdone err if err
 				tdone()
 
-describe 'set value via data', ->
-	it 'should work without error', (tdone) ->
+	it 'set value via data should work', (tdone) ->
 		jdb.exec
 			data: 10
 			command: (db, data) ->
@@ -32,8 +34,7 @@ describe 'set value via data', ->
 				tdone err if err
 				tdone()
 
-describe 'test promise', ->
-	it 'should work without error', (tdone) ->
+	it 'test promise should work', (tdone) ->
 		jdb.exec
 			data: 10
 			command: (db, data) ->
@@ -45,8 +46,7 @@ describe 'test promise', ->
 			catch e
 				tdone e
 
-describe 'get value', ->
-	it 'should work without error', (tdone) ->
+	it 'get value should work', (tdone) ->
 		jdb.exec
 			command: (db) ->
 				db.send ++db.doc.a
@@ -58,18 +58,13 @@ describe 'get value', ->
 				catch e
 					tdone e
 
-describe 'compact_db_file', ->
-	it 'the doc should be { a: 11 }', (tdone) ->
-		fs = require 'fs'
+	it 'compact_db_file: the doc should be { a: 11 }', (tdone) ->
 		str = fs.readFileSync db_path, 'utf8'
 		eval str
 
 		try
 			assert.equal 11, jdb.doc.a
-			setTimeout(->
-				fs.unlinkSync db_path
-				tdone()
-			, 100)
+			tdone()
 		catch e
 			tdone e
 
