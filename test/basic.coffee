@@ -68,3 +68,6 @@ describe 'Basic: ', ->
 		catch e
 			tdone e
 
+	it 'closing db should be peaceful', (tdone) ->
+		jdb.close ->
+			fs.writeFile db_path, '\n\n', tdone

@@ -48,6 +48,9 @@ class JDB.Jdb then constructor: (options) ->
 				ego.compacted_data()
 			)
 
+		close: (callback) ->
+			ego.db_file.end callback
+
 	}
 
 	# Private
