@@ -1,5 +1,5 @@
 Benchmark = require('benchmark')
-suite = new Benchmark.Suite;
+suite = new Benchmark.Suite
 Benchmark.support.timeout = false
 
 jdb = new (require '../')

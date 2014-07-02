@@ -58,7 +58,6 @@ describe 'get value', ->
 				catch e
 					tdone e
 
-
 describe 'compact_db_file', ->
 	it 'the doc should be { a: 11 }', (tdone) ->
 		fs = require 'fs'
