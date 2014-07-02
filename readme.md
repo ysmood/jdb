@@ -135,6 +135,11 @@ See help info.
 
     jdb -h
 
+Interactive mode, you have two global api.
+You can manipulate the data via `doc`, and run `save()` to permanent your change.
+
+    jdb -i
+
 Start server at port 8081.
 
     jdb -p 8081

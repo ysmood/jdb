@@ -15,6 +15,7 @@ class JDB.Server then constructor: ->
 	ego = {
 
 		opts: {
+			interactive: false
 			db_path: 'jdb.db'
 			port: 8137
 			host: '127.0.0.1'
@@ -27,13 +28,17 @@ class JDB.Server then constructor: ->
 
 			ego.jdb = new JDB.Jdb ego.opts
 
-			ego.init_server()
+			if ego.opts.interactive
+				ego.init_interactive()
+			else
+				ego.init_server()
 
 		init_options: ->
-			commander = require 'commander'
-			commander
+			cmder = require 'commander'
+			cmder
 			.usage '[options] [config.json or config.js]'
 			.option '-d, --db_path <path>', 'Data base file path'
+			.option '-i, --interactive', 'Start with interactive mode'
 			.option '-p, --port <port>', 'Port to listen to. Default is ' + ego.opts.port, parseInt
 			.option '--host <host>', "Host to listen to. Default is #{ego.opts.host} only"
 			.option '-c, --compact_db_file <true>', 'Whether compact db file at start up or not', (data) ->
@@ -41,13 +46,13 @@ class JDB.Server then constructor: ->
 			.option '-v, --ver', 'Print JDB version'
 			.parse process.argv
 
-			if commander.ver
+			if cmder.ver
 				conf = require '../package'
 				console.log 'JDB v' + conf.version
 				process.exit()
 
-			if commander.args[0]
-				ego.opts.config_path = commander.args[0]
+			if cmder.args[0]
+				ego.opts.config_path = cmder.args[0]
 
 			if ego.opts.config_path
 				config = require ego.opts.config_path
@@ -59,7 +64,25 @@ class JDB.Server then constructor: ->
 						ego.opts[k] = opts[k]
 
 			defaults config
-			defaults commander
+			defaults cmder
+
+		init_interactive: ->
+			global.save = ->
+				ego.jdb.exec {
+					data: global.doc
+					command: (jdb, data) ->
+						jdb.doc = data
+						jdb.save()
+				}
+
+			ego.jdb.exec {
+				command: (jdb) ->
+					jdb.send jdb.doc
+				callback: (err, doc) ->
+					global.doc = doc
+					cmd = require 'coffee-script/lib/coffee-script/command'
+					cmd.run()
+			}
 
 		init_server: ->
 			http = require 'http'
