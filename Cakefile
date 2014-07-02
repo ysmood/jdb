@@ -2,8 +2,8 @@ fs = require 'fs'
 glob = require 'glob'
 spawn = require 'win-spawn'
 
-coffee_bin = 'coffee'
-mocha_bin = 'mocha'
+coffee_bin = 'node_modules/.bin/coffee'
+mocha_bin = 'node_modules/.bin/mocha'
 
 option '-n', '--no-server', 'Test without standalone test'
 task 'test', 'Basic test', (options) ->
