@@ -1,5 +1,5 @@
 
-spawn = require 'win-spawn'
+{ spawn } = require '../lib/kit'
 assert = require 'assert'
 
 port = 8137
@@ -12,7 +12,7 @@ describe 'standalone mode test', ->
 		'node'
 		['bin/jdb.js', '-p', port]
 		{ stdio: 'inherit' }
-	)
+	).process
 
 	exit = ->
 		server.kill 'SIGINT'

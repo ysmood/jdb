@@ -1,34 +1,8 @@
+require 'coffee-script/register'
+
 fs = require 'fs'
 glob = require 'glob'
-
-
-spawn: (cmd, args = [], options = {}) ->
-	if process.platform == 'win32'
-		cmd_ext = cmd + '.cmd'
-		if fs.existsSync cmd_ext
-			cmd = cmd_ext
-		else
-			which = kit._require 'which'
-			cmd = which.sync(cmd)
-		cmd = kit.path.normalize cmd
-
-	deferred = Q.defer()
-
-	opts = _.defaults options, { stdio: 'inherit' }
-
-	{ spawn } = kit._require 'child_process'
-	try
-		ps = spawn cmd, args, opts
-	catch err
-		deferred.reject err
-
-	ps.on 'error', (err) ->
-		deferred.reject err
-
-	deferred.promise.process = ps
-
-	return deferred.promise
-
+{ spawn } = require './lib/kit'
 
 coffee_bin = 'node_modules/.bin/coffee'
 mocha_bin = 'node_modules/.bin/mocha'
@@ -50,7 +24,7 @@ task 'test', 'Basic test', (options) ->
 			'coffee-script/register'
 			file
 		], { stdio: 'inherit' })
-		.on 'exit', (code) ->
+		.process.on 'exit', (code) ->
 			if code != 0
 				process.exit code
 
