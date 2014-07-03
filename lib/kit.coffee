@@ -1,5 +1,6 @@
 Q = require 'q'
 _ = require 'lodash'
+fs = require 'fs'
 
 module.exports = {
 
