@@ -1,6 +1,34 @@
 fs = require 'fs'
 glob = require 'glob'
-spawn = require 'win-spawn'
+
+
+spawn: (cmd, args = [], options = {}) ->
+	if process.platform == 'win32'
+		cmd_ext = cmd + '.cmd'
+		if fs.existsSync cmd_ext
+			cmd = cmd_ext
+		else
+			which = kit._require 'which'
+			cmd = which.sync(cmd)
+		cmd = kit.path.normalize cmd
+
+	deferred = Q.defer()
+
+	opts = _.defaults options, { stdio: 'inherit' }
+
+	{ spawn } = kit._require 'child_process'
+	try
+		ps = spawn cmd, args, opts
+	catch err
+		deferred.reject err
+
+	ps.on 'error', (err) ->
+		deferred.reject err
+
+	deferred.promise.process = ps
+
+	return deferred.promise
+
 
 coffee_bin = 'node_modules/.bin/coffee'
 mocha_bin = 'node_modules/.bin/mocha'

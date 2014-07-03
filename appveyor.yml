@@ -13,4 +13,4 @@ install:
 test_script:
   - node --version
   - npm --version
-  - cake -n test
+  - node_modules/.bin/cake -n test
