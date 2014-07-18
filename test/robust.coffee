@@ -3,6 +3,9 @@ assert = require 'assert'
 
 db_path = 'test/robust.db'
 
+try
+	fs.unlinkSync db_path
+
 jdb = new (require '../') {
 	db_path
 	promise: true
@@ -39,7 +42,4 @@ describe 'Handle exception', ->
 			if err or data == undefined
 				tdone err
 			else
-				setTimeout(->
-					fs.unlinkSync db_path
-					tdone()
-				, 100)
+				tdone()

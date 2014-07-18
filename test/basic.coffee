@@ -13,6 +13,9 @@ jdb = new (require '../') {
 			process.exit 1
 }
 
+try
+	fs.unlinkSync db_path
+
 describe 'Basic: ', ->
 	it 'set value should work', (tdone) ->
 		jdb.exec (db) ->
@@ -46,13 +49,14 @@ describe 'Basic: ', ->
 		, (err, data) ->
 			try
 				assert.equal 11, data
-				jdb.compact_db_file ->
-					tdone()
+				tdone()
 			catch e
 				tdone e
 
-	it 'compact_db_file: the doc should be { a: 11 }', (tdone) ->
+	it 'compact_db_file: the doc should be { a: 12 }', (tdone) ->
 		"use strict"
+
+		jdb.compact_db_file_sync()
 
 		str = fs.readFileSync db_path, 'utf8'
 		db = eval str + '; jdb;'
@@ -65,4 +69,4 @@ describe 'Basic: ', ->
 
 	it 'closing db should be peaceful', (tdone) ->
 		jdb.close ->
-			fs.writeFile db_path, '\n\n', tdone
+			tdone()
