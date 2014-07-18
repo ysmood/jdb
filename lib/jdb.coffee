@@ -84,7 +84,6 @@ class JDB.Jdb then constructor: (options) ->
 				flags: 'a'
 				encoding: 'utf8'
 			}
-			ego.db_file.write ego.compacted_data()
 
 		init_options: ->
 			return if not options
@@ -106,10 +105,12 @@ class JDB.Jdb then constructor: (options) ->
 
 			str = fs.readFileSync ego.opts.db_path, 'utf8'
 			try
-				eval str
+				jdb = eval str + '; jdb;'
 				if typeof jdb != 'undefined' and
 				typeof jdb.doc == 'object'
 					ego.doc = jdb.doc
+				else
+					self.compact_db_file_sync()
 			catch err
 				error = err
 
