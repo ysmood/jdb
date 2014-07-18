@@ -47,7 +47,7 @@ wrong = ->
 
 
 # Get the value.
-# Use arguments other than { data, command, callback }
+# You can also use arguments other than the `{ data, command, callback }`
 jdb.exec (jdb) ->
     jdb.send jdb.doc.ys.name
 , (err, data) ->
