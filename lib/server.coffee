@@ -80,6 +80,7 @@ class JDB.Server then constructor: ->
 					jdb.send jdb.doc
 				callback: (err, doc) ->
 					global.doc = doc
+					process.argv = []
 					cmd = require 'coffee-script/lib/coffee-script/command'
 					cmd.run()
 			}
