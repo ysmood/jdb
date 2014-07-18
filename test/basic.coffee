@@ -22,12 +22,13 @@ describe 'Basic: ', ->
 			tdone err
 
 	it 'set value via data should work', (tdone) ->
-		jdb.exec 10
-		, (db, data) ->
-			db.doc.a = data
-			db.save()
-		, (err) ->
-			tdone err
+		jdb.exec
+			data: 10
+			command: (db, data) ->
+				db.doc.a = data
+				db.save()
+			callback: (err) ->
+				tdone err
 
 	it 'test promise should work', (tdone) ->
 		jdb.exec 10, (db, data) ->
