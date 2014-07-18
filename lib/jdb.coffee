@@ -8,13 +8,19 @@ class JDB.Jdb then constructor: (options) ->
 	self = {
 
 		exec: (data, command, callback) ->
-			if typeof data == 'function'
-				command = data
-				callback = command
+			switch arguments.length
+				when 0
+					return
+				when 1
+					opts = data
+				else
+					if typeof data == 'function'
+						callback = command
+						command = data
 
-			return if not command
+					opts = { data, command, callback }
 
-			opts = { data, command, callback }
+			return if not opts.command
 
 			jdb = ego.generate_api opts
 
