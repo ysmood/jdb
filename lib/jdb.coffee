@@ -86,6 +86,7 @@ class JDB.Jdb then constructor: (options) ->
 				flags: 'a'
 				encoding: 'utf8'
 			}
+			ego.db_file.write ego.compacted_data()
 
 		init_options: ->
 			return if not options
@@ -103,15 +104,14 @@ class JDB.Jdb then constructor: (options) ->
 				self.compact_db_file_sync()
 
 		load_data: ->
+			"use strict"
+
 			str = fs.readFileSync ego.opts.db_path, 'utf8'
-			jdb = {
-				send: ->
-				save: ->
-				rollback: ->
-			}
 			try
 				eval str
-				ego.doc = jdb.doc if typeof jdb.doc == 'object'
+				if typeof jdb != 'undefined' and
+				typeof jdb.doc == 'object'
+					ego.doc = jdb.doc
 			catch err
 				error = err
 
@@ -155,7 +155,12 @@ class JDB.Jdb then constructor: (options) ->
 			return jdb
 
 		compacted_data: ->
-			"jdb.doc = #{JSON.stringify(ego.doc)};\n"
+			"var jdb = {
+				doc: #{JSON.stringify(ego.doc)},
+				send: function() {},
+				save: function() {},
+				rollback: function() {}
+			};"
 
 	}
 
