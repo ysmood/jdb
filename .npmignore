@@ -4,3 +4,4 @@ Cakefile
 .*
 *.coffee
 *.db
+lib/kit.coffee
