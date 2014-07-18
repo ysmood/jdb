@@ -7,16 +7,12 @@ glob = require 'glob'
 coffee_bin = 'node_modules/.bin/coffee'
 mocha_bin = 'node_modules/.bin/mocha'
 
-option '-n', '--no-server', 'Test without standalone test'
 task 'test', 'Basic test', (options) ->
 	list = [
 		'test/basic.coffee'
 		'test/robust.coffee'
 		'test/standalone.coffee'
 	]
-
-	if options['no-server']
-		list.splice 2, 1
 
 	list.map (file) ->
 		spawn(mocha_bin, [

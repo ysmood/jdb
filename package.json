@@ -7,9 +7,9 @@
     "jdb": "bin/jdb.js"
   },
   "scripts": {
-    "test": "node_modules/.bin/cake test",
-    "prepublish": "node_modules/.bin/cake build",
-    "publish": "node_modules/.bin/cake clean"
+    "test": "cake test",
+    "prepublish": "cake build",
+    "publish": "cake clean"
   },
   "repository": {
     "type": "git",
