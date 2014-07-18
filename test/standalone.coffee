@@ -20,7 +20,7 @@ describe 'standalone mode test', ->
 	it 'the server should return right value.', (tdone) ->
 		try_contact_api = ->
 			http = require 'http'
-			cmd = '{ "data": 10, "command": "function(jdb, data) { jdb.doc.a = 1; jdb.save(jdb.doc.a); }" }'
+			cmd = '{ "data": 10, "command": "function(jdb, data) { jdb.doc.ys = 1; jdb.save(jdb.doc); }" }'
 
 			req = http.request {
 				host: '127.0.0.1'
@@ -33,8 +33,9 @@ describe 'standalone mode test', ->
 					data += chunk
 
 				res.on 'end', ->
+					data = JSON.parse data
 					try
-						assert.equal data, 1
+						assert.equal data.ys, 1
 						tdone()
 					catch e
 						tdone e
