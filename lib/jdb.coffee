@@ -8,17 +8,15 @@ class JDB.Jdb then constructor: (options) ->
 	self = {
 
 		exec: (data, command, callback) ->
-			switch arguments.length
-				when 0
-					return
-				when 1
-					opts = data
-				else
-					if typeof data == 'function'
-						callback = command
-						command = data
+			if arguments.length == 0
+				return
+			else if typeof data == 'function'
+				callback = command
+				command = data
+			else if arguments.length == 1
+				{ data, command, callback } = data
 
-					opts = { data, command, callback }
+			opts = { data, command, callback }
 
 			return if not opts.command
 
