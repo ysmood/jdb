@@ -47,11 +47,11 @@ wrong = ->
 
 
 # Get the value.
-jdb.exec
-    command: (jdb) ->
-        jdb.send jdb.doc.ys.name
-    callback: (err, data) ->
-        console.log data # output >> [ "Yad", "Smood" ]
+# Use arguments other than { data, command, callback }
+jdb.exec (jdb) ->
+    jdb.send jdb.doc.ys.name
+, (err, data) ->
+    console.log data # output >> [ "Yad", "Smood" ]
 
 
 # You can even load third party libs to handle with your data.
