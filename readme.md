@@ -43,7 +43,6 @@ Here's the embedded mode example.
 
 jdb = new (require 'jdb') { promise: true }
 
-
 # The data to play with.
 some_data = {
     "name": {
@@ -90,11 +89,11 @@ wrong = ->
 
 
 # Get the value.
-jdb.exec
-    command: (jdb) ->
-        jdb.send jdb.doc.ys.name
-    callback: (err, data) ->
-        console.log data # output >> [ "Yad", "Smood" ]
+# You can also use arguments other than the `{ data, command, callback }`
+jdb.exec (jdb) ->
+    jdb.send jdb.doc.ys.name
+, (err, data) ->
+    console.log data # output >> [ "Yad", "Smood" ]
 
 
 # You can even load third party libs to handle with your data.
@@ -172,98 +171,100 @@ It simply executes all your js code to manipulate a `doc` object, and append eac
 js code to a file. Each time when you start up the JDB, it executes all the code in the file,
 and the last time's `doc` object will come back again in the memory.
 
+****************************************************************************
 
 # API
 
-## class Jdb
+The main api of class Jdb.
 
-* ### constructor (options)
+## `constructor ([options])`
 
-      * **options**
+* **options**
 
-         * **db_path**
+   * **db_path** _{Boolean}_
 
-           Where to save the database file. Default value is `jdb.db`.
+     Where to save the database file. Default value is `jdb.db`.
 
-         * **compact_db_file**
+   * **compact_db_file** _{Boolean}_
 
-           Boolean. Whether to compact db file before start up or not. Default true.
+     Whether to compact db file before start up or not. Default true.
 
-         * **promise**
+   * **promise** _{Boolean}_
 
-           Boolean. Whether to enable promise or not. Default false.
+     Whether to enable promise or not. Default false.
 
-         * **error**
+   * **error** _{Function}_
 
-           The error handler when initializing database.
+     The error handler when initializing database.
 
-* ### exec (options)
+## `exec ([data], command, [callback])`
 
-  `options` is an object, here are its member list.
+A api and the only api to interact with the data in database.
 
-  * **data**
+* **data** _{Object}_
 
-      `data` should be serializable object. It will be send with `command`, see the `command (jdb)` part.
+    `data` should be serializable object. It will be send with `command`, see the `command (jdb)` part.
 
-  * **command (jdb)**
+* **command (jdb)** _{Function}_
 
-      A function or corresponding source code.
-      The code in this function is in another scope (database file scope).
-      Do not share outer variable within it, see the wrong example in quick start part.
+    A function or corresponding source code.
+    The code in this function is in another scope (database file scope).
+    Do not share outer variable within it, see the wrong example in quick start part.
 
-      #### jdb
+    * **jdb** _{Object}_
 
       An object from which you access the functions of the database. Here's the list of its members.
 
-      * **data**
+      * **jdb.data** _{Object}_
 
          The `data` object that is sent from the `exec (options)`.
 
-      * **doc**
+      * **jdb.doc** _{Object}_
 
-         The main storage `Object`.
+         The main storage object.
 
-      * **save([data])**
+      * **jdb.save ([data])** _{Function}_
 
          When your data manipulation is done, call this method to permanent your change. It will automatically call the send for you.
 
-         * **data**
+         * **data** _{Object}_
 
              The same as the `data` of `jdb.send`.
 
-      * **send ([data])**
+      * **jdb.send ([data])** _{Function}_
 
          Send data to the `callback`.
 
-         * **data**
+         * **data** _{Object}_
 
              Type is `Object`. It should be serializable.
 
-      * **rollback()**
+      * **jdb.rollback()** _{Function}_
 
          Call it when you want to rollback the change that you made.
 
-  * **callback (err, data)**
+* **callback (err, data)** _{Function}_
 
-     This function will be invoked after the `save` or `send` is called.
+   This function will be invoked after the `save` or `send` is called.
 
-      * **err**
+    * **err** _{Object}_
 
-         Type is `Object`.
+       It can only catch sync errors, you should handle async errors by yourself.
 
-      * **data**
+    * **data** _{Function}_
 
-         Type is `Object`.
+       The data you send from `jdb.send(data)` or `jdb.save(data)`.
 
 
-* ### compact_db_file (callback)
+## `compact_db_file ([callback])`
 
-  Reduce the size of the database file. It will calculate all the commands and save the final `doc` object to the file and delete all the other commands.
+Reduce the size of the database file. It will calculate all the commands and save the final `doc` object to the file and delete all the other commands.
 
-* ### compact_db_file_sync ()
+## `compact_db_file_sync ()`
 
-  The sync version of `compact_db_file (callback)`.
+The sync version of `compact_db_file (callback)`.
 
+****************************************************************************
 
 # Unit test
 
