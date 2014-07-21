@@ -198,6 +198,7 @@ The main api of class Jdb.
      The error handler when initializing database.
 
 ## `exec ([data], command, [callback])`
+## `exec (options)`
 
 A api and the only api to interact with the data in database.
 
