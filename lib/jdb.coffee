@@ -1,7 +1,7 @@
 
 class JDB.Jdb then constructor: ->
 
-	fs = require 'graceful-fs'
+	fs = require 'fs'
 	Q = require 'q'
 
 	# Public

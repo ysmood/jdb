@@ -28,7 +28,6 @@
   "dependencies": {
     "coffee-script": "^1.7.1",
     "commander": "~2.2.0",
-    "graceful-fs": "^3.0.2",
     "q": "~1.0.1"
   },
   "devDependencies": {
