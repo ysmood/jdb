@@ -80,7 +80,7 @@ class JDB.Jdb then constructor: ->
 		opts: {
 			db_path: 'jdb.db'
 			compact_db_file: true
-			promise: false
+			promise: true
 		}
 
 		doc: {}
