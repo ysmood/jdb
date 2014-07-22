@@ -135,8 +135,7 @@ class JDB.Jdb then constructor: ->
 				try
 					jdb = jdb_ref
 					eval buf
-					if typeof jdb != undefined and
-					typeof jdb.doc == 'object'
+					if jdb and typeof jdb.doc == 'object'
 						ego.doc = jdb.doc
 						deferred.resolve()
 					else
