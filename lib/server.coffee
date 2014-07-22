@@ -26,12 +26,14 @@ class JDB.Server then constructor: ->
 		init: ->
 			ego.init_options()
 
-			ego.jdb = new JDB.Jdb ego.opts
+			ego.jdb = new JDB.Jdb
 
-			if ego.opts.interactive
-				ego.init_interactive()
-			else
-				ego.init_server()
+			ego.jdb.init ego.opts
+			.done ->
+				if ego.opts.interactive
+					ego.init_interactive()
+				else
+					ego.init_server()
 
 		init_options: ->
 			cmder = require 'commander'
@@ -147,13 +149,14 @@ class JDB.Server then constructor: ->
 							ego.send ht, JSON.stringify(data or 'ok')
 
 		compact_db_file: (ht) ->
-			ego.jdb.compact_db_file (err) ->
-				if err
-					ego.send ht, JSON.stringify(
-						{ error: err.message }
-					), 500
-				else
-					ego.send ht, 'OK'
+			ego.jdb.compact_db_file
+			.then (err) ->
+				ego.send ht, 'OK'
+			.catch (err) ->
+				ego.send ht, JSON.stringify(
+					{ error: err.message }
+				), 500
+			.done()
 
 		not_found: (ht) ->
 			ego.send ht, 'not found', 404
