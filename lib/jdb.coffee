@@ -106,7 +106,9 @@ class JDB.Jdb then constructor: ->
 			deferred = Q.defer()
 
 			rl = readline.createInterface {
-				input: fs.createReadStream ego.opts.db_path, 'utf8'
+				input: fs.createReadStream ego.opts.db_path, {
+					encoding: 'utf8'
+				}
 				output: process.stdout
 				terminal: false
 			}
