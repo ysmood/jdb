@@ -41,7 +41,7 @@ Here's the embedded mode example.
 
 ```coffeescript
 
-jdb = new (require 'jdb')
+jdb = require 'jdb'
 
 # The data to play with.
 some_data = {
@@ -193,7 +193,7 @@ The main api of class Jdb.
 
    * **promise** _{Boolean}_
 
-     Whether to enable promise or not. Default false.
+     Whether to enable promise or not. Default true.
 
    * **error** _{Function}_
 
