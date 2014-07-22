@@ -8,21 +8,15 @@ coffee_bin = 'node_modules/.bin/coffee'
 mocha_bin = 'node_modules/.bin/mocha'
 
 task 'test', 'Basic test', (options) ->
-	list = [
-		'test/basic.coffee'
-		'test/robust.coffee'
-		'test/standalone.coffee'
-	]
-
-	list.map (file) ->
-		spawn(mocha_bin, [
-			'-r'
-			'coffee-script/register'
-			file
-		], { stdio: 'inherit' })
-		.process.on 'exit', (code) ->
-			if code != 0
-				process.exit code
+	spawn(mocha_bin, [
+		'-r'
+		'coffee-script/register'
+		'-R', 'spec'
+		'test/*.coffee'
+	], { stdio: 'inherit' })
+	.process.on 'exit', (code) ->
+		if code != 0
+			process.exit code
 
 task 'benchmark', 'Performance benchmark', ->
 	spawn coffee_bin, [
