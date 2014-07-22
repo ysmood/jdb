@@ -1,11 +1,20 @@
 
-class JDB.Jdb then constructor: (options) ->
+class JDB.Jdb then constructor: ->
 
 	fs = require 'graceful-fs'
 	Q = require 'q'
 
 	# Public
 	self = {
+
+		init: (options) ->
+			ego.init_options options
+			ego.init_db_file().then ->
+				ego.db_file = fs.createWriteStream ego.opts.db_path, {
+					flags: 'a'
+					encoding: 'utf8'
+				}
+				null
 
 		exec: (data, command, callback) ->
 			if arguments.length == 0
@@ -25,7 +34,7 @@ class JDB.Jdb then constructor: (options) ->
 			try
 				opts.command jdb, opts.data
 			catch err
-				jdb.rollback()
+				err.promise = jdb.rollback()
 
 				if opts.callback
 					opts.callback err
@@ -34,22 +43,20 @@ class JDB.Jdb then constructor: (options) ->
 
 			return opts.deferred.promise if ego.opts.promise
 
-		compact_db_file: (callback) ->
-			deferred = Q.defer() if ego.opts.promise
+		compact_db_file: ->
+			deferred = Q.defer()
 
 			fs.writeFile(
 				ego.opts.db_path
 				ego.compacted_data()
 			, (err) ->
-				if ego.opts.promise
-					if err
-						deferred.reject err
-					else
-						deferred.resolve()
-				callback? err
+				if err
+					deferred.reject err
+				else
+					deferred.resolve()
 			)
 
-			return deferred.promise if ego.opts.promise
+			return deferred.promise
 
 		compact_db_file_sync: ->
 			fs.writeFileSync(
@@ -57,9 +64,14 @@ class JDB.Jdb then constructor: (options) ->
 				ego.compacted_data()
 			)
 
-		close: (callback) ->
-			ego.db_file.end callback
-
+		close: ->
+			deferred = Q.defer()
+			ego.db_file.end (err) ->
+				if err
+					deferred.reject err
+				else
+					deferred.resolve()
+			deferred.promise
 	}
 
 	# Private
@@ -69,23 +81,13 @@ class JDB.Jdb then constructor: (options) ->
 			db_path: 'jdb.db'
 			compact_db_file: true
 			promise: false
-			error: null
 		}
 
 		doc: {}
 
 		db_file: null
 
-		init: ->
-			ego.init_options()
-			ego.init_db_file()
-
-			ego.db_file = fs.createWriteStream ego.opts.db_path, {
-				flags: 'a'
-				encoding: 'utf8'
-			}
-
-		init_options: ->
+		init_options: (options) ->
 			return if not options
 
 			for k, v of ego.opts
@@ -93,31 +95,58 @@ class JDB.Jdb then constructor: (options) ->
 
 		init_db_file: ->
 			if fs.existsSync ego.opts.db_path
-				ego.load_data()
-
-				if ego.opts.compact_db_file
-					self.compact_db_file_sync()
+				ego.load_data().then ->
+					if ego.opts.compact_db_file
+						self.compact_db_file()
 			else
-				self.compact_db_file_sync()
+				self.compact_db_file()
 
 		load_data: ->
-			"use strict"
+			readline = require 'readline'
+			deferred = Q.defer()
 
-			str = fs.readFileSync ego.opts.db_path, 'utf8'
-			try
-				jdb = eval str + '; jdb;'
-				if typeof jdb != 'undefined' and
-				typeof jdb.doc == 'object'
-					ego.doc = jdb.doc
+			rl = readline.createInterface {
+				input: fs.createReadStream ego.opts.db_path, 'utf8'
+				output: process.stdout
+				terminal: false
+			}
+			buf = ''
+			jdb_ref = null
+			is_first_line = true
+
+			rl.on 'line', (line) ->
+				if line[0] == '('
+					try
+						if is_first_line
+							jdb_ref = eval buf + '; jdb'
+							is_first_line = false
+						else
+							jdb = jdb_ref
+							eval buf
+					catch err
+						deferred.reject err
+					buf = line
 				else
-					self.compact_db_file_sync()
-			catch err
-				error = err
+					buf += '\n' + line
 
-			if ego.opts.error
-				ego.opts.error error
-			else if error
-				throw error
+			rl.on 'close', ->
+				try
+					jdb = jdb_ref
+					eval buf
+					if typeof jdb != undefined and
+					typeof jdb.doc == 'object'
+						ego.doc = jdb.doc
+						deferred.resolve()
+					else
+						self.compact_db_file()
+						.catch (err) ->
+							deferred.reject err
+						.done ->
+							deferred.resolve()
+				catch err
+					deferred.reject err
+
+			deferred.promise
 
 		generate_api: (opts) ->
 			if ego.opts.promise
@@ -139,14 +168,19 @@ class JDB.Jdb then constructor: (options) ->
 				save: (data) ->
 					return if is_rolled_back
 
+					# Indent function content for huge db file loading.
+					indented_cmd = opts.command.toString()
+						.replace /^function([\s\S]+)\}$/, (m, p) ->
+							'function' + p.replace(/\n\(/g, '\n (') + '}'
+
 					ego.db_file.write(
-						"(#{opts.command})(jdb, #{JSON.stringify(opts.data)});\n"
+						"(#{indented_cmd})(jdb, #{JSON.stringify(opts.data)});\n"
 						-> jdb.send data
 					)
 
 				rollback: ->
-					ego.load_data()
 					is_rolled_back = true
+					ego.load_data()
 
 				doc: ego.doc
 			}
@@ -159,7 +193,7 @@ class JDB.Jdb then constructor: (options) ->
 				send: function() {},
 				save: function() {},
 				rollback: function() {}
-			};"
+			};\n"
 
 	}
 
@@ -171,6 +205,4 @@ class JDB.Jdb then constructor: (options) ->
 		if typeof v == 'function'
 			v.bind self
 
-	ego.init()
-
-	return self
+	self
