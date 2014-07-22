@@ -3,28 +3,26 @@ fs = require 'fs'
 
 db_path = 'test/baisc.db'
 
-jdb = new (require '../') {
-	db_path
-	compact_db_file: false
-	promise: true
-	error: (err) ->
-		if err
-			console.error err.stack
-			process.exit 1
-}
-
 try
 	fs.unlinkSync db_path
 
+jdb = new (require '../')
+
 describe 'Basic: ', ->
-	it 'set value should work', (tdone) ->
+	before ->
+		jdb.init {
+			db_path
+			compact_db_file: false
+		}
+
+	it 'set value', (tdone) ->
 		jdb.exec (db) ->
 			db.doc.a = 10
 			db.save()
 		, (err) ->
 			tdone err
 
-	it 'set value via data should work', (tdone) ->
+	it 'set value via data', (tdone) ->
 		jdb.exec
 			data: 10
 			command: (db, data) ->
@@ -33,7 +31,7 @@ describe 'Basic: ', ->
 			callback: (err) ->
 				tdone err
 
-	it 'test promise should work', (tdone) ->
+	it 'test promise', (tdone) ->
 		jdb.exec 10, (db, data) ->
 			db.send db.doc.a
 		.done (data) ->
@@ -43,7 +41,7 @@ describe 'Basic: ', ->
 			catch e
 				tdone e
 
-	it 'get value should work', (tdone) ->
+	it 'get value', (tdone) ->
 		jdb.exec (db) ->
 			db.send ++db.doc.a
 		, (err, data) ->
@@ -53,7 +51,7 @@ describe 'Basic: ', ->
 			catch e
 				tdone e
 
-	it 'compact_db_file: the doc should be { a: 12 }', (tdone) ->
+	it 'compact_db_file', (tdone) ->
 		"use strict"
 
 		jdb.compact_db_file_sync()
@@ -67,6 +65,5 @@ describe 'Basic: ', ->
 		catch e
 			tdone e
 
-	it 'closing db should be peaceful', (tdone) ->
-		jdb.close ->
-			tdone()
+	it 'close db', ->
+		jdb.close()
