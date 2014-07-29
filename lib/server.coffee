@@ -111,11 +111,12 @@ class JDB.Server then constructor: ->
 			console.log ">>", msg
 
 		send: (ht, body = '', status = 200, type = 'application/json') ->
+			buf = new Buffer(body)
 			ht.res.writeHead status, {
 				'Content-Type': type
-				'Content-Length': body.length
+				'Content-Length': buf.length
 			}
-			ht.res.end body
+			ht.res.end buf
 
 		exec: (ht) ->
 			body = ''
