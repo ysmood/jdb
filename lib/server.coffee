@@ -110,7 +110,7 @@ class JDB.Server then constructor: ->
 		log: (msg, level = 0) ->
 			console.log ">>", msg
 
-		send: (ht, body = '', status = 200, type = 'application/json') ->
+		send: (ht, body = '', status = 200, type = 'application/json; charset=utf-8') ->
 			buf = new Buffer(body)
 			ht.res.writeHead status, {
 				'Content-Type': type
