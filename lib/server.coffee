@@ -115,6 +115,7 @@ class JDB.Server then constructor: ->
 			ht.res.writeHead status, {
 				'Content-Type': type
 				'Content-Length': buf.length
+				'X-Powered-By': 'jdb'
 			}
 			ht.res.end buf
 
