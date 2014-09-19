@@ -1,5 +1,3 @@
-require 'coffee-script/register'
-
 fs = require 'fs'
 glob = require 'glob'
 { spawn } = require './lib/kit'
