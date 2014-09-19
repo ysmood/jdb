@@ -51,7 +51,7 @@ describe 'Basic: ', ->
 			catch e
 				tdone e
 
-	it 'compact_db_file', (tdone) ->
+	it 'compact_db_file_sync', (tdone) ->
 		"use strict"
 
 		jdb.compact_db_file_sync()
@@ -64,6 +64,24 @@ describe 'Basic: ', ->
 			tdone()
 		catch e
 			tdone e
+
+	it 'compact_db_file', (tdone) ->
+		"use strict"
+
+		jdb.exec (jdb) ->
+			jdb.doc.a = 12
+			jdb.save()
+		.then ->
+			jdb.compact_db_file()
+		.done ->
+			str = fs.readFileSync db_path, 'utf8'
+			db = eval str + '; jdb;'
+
+			try
+				assert.equal 12, db.doc.a
+				tdone()
+			catch e
+				tdone e
 
 	it 'close db', ->
 		jdb.close()

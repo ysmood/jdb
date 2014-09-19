@@ -37,26 +37,25 @@ class JDB.Jdb then constructor: ->
 				err.promise = jdb.rollback()
 
 				if opts.callback
-					opts.callback err
+					err.promise.done ->
+						opts.callback err
 				else
 					opts.deferred.reject err if ego.opts.promise
 
 			return opts.deferred.promise if ego.opts.promise
 
 		compact_db_file: ->
-			deferred = Q.defer()
+			ego.is_compressing = true
 
-			fs.writeFile(
+			Q.nfcall(
+				fs.writeFile
 				ego.opts.db_path
 				ego.compacted_data()
-			, (err) ->
-				if err
-					deferred.reject err
-				else
-					deferred.resolve()
-			)
-
-			return deferred.promise
+			).then ->
+				ego.is_compressing = false
+				ego.write_queue.forEach (fn) -> fn()
+				ego.write_queue = []
+			.then()
 
 		compact_db_file_sync: ->
 			fs.writeFileSync(
@@ -86,6 +85,9 @@ class JDB.Jdb then constructor: ->
 		doc: {}
 
 		db_file: null
+
+		is_compressing: false
+		write_queue: []
 
 		init_options: (options) ->
 			return if not options
@@ -174,10 +176,19 @@ class JDB.Jdb then constructor: ->
 						.replace /^function([\s\S]+)\}$/, (m, p) ->
 							'function' + p.replace(/\n\(/g, '\n (') + '}'
 
-					ego.db_file.write(
-						"(#{indented_cmd})(jdb, #{JSON.stringify(opts.data)});\n"
-						-> jdb.send data
-					)
+					cmd_data = "(#{indented_cmd})(jdb, #{JSON.stringify(opts.data)});\n"
+
+					if ego.is_compressing
+						ego.write_queue.push ->
+							ego.db_file.write(
+								cmd_data
+								-> jdb.send data
+							)
+					else
+						ego.db_file.write(
+							cmd_data
+							-> jdb.send data
+						)
 
 				rollback: ->
 					is_rolled_back = true
