@@ -16,7 +16,7 @@ For further infomation goto [How it works?](#user-content-how-it-works)
 
 * Super fast ([see the benchmark](#user-content-benchmarks)).
 
-* Light weight. Core code is only about 150 lines.
+* Light weight. Core code is only about 200 lines.
 
 * Promise support.
 
