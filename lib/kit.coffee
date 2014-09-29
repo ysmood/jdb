@@ -1,4 +1,4 @@
-Q = require 'q'
+Promise = require 'bluebird'
 _ = require 'lodash'
 fs = require 'fs'
 
@@ -15,21 +15,26 @@ module.exports = {
 			fs_path = require 'path'
 			cmd = fs_path.normalize cmd
 
-		deferred = Q.defer()
+		ps = null
 
-		opts = _.defaults options, { stdio: 'inherit' }
+		promise = new Promise (resolve, reject) ->
 
-		{ spawn } = require 'child_process'
-		try
-			ps = spawn cmd, args, opts
-		catch err
-			deferred.reject err
+			opts = _.defaults options, { stdio: 'inherit' }
 
-		ps.on 'error', (err) ->
-			deferred.reject err
+			{ spawn } = require 'child_process'
+			try
+				ps = spawn cmd, args, opts
+			catch err
+				deferred.reject err
 
-		deferred.promise.process = ps
+			ps.on 'error', (err) ->
+				deferred.reject err
 
-		return deferred.promise
+			ps.on 'close', (code, signal) ->
+				resolve { code, signal }
+
+		promise.process = ps
+
+		promise
 
 }

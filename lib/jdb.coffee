@@ -2,7 +2,7 @@
 class JDB.Jdb then constructor: ->
 
 	fs = require 'fs'
-	Q = require 'q'
+	Promise = require 'Bluebird'
 
 	# Public
 	self = {
@@ -47,8 +47,7 @@ class JDB.Jdb then constructor: ->
 		compact_db_file: ->
 			ego.is_compressing = true
 
-			Q.nfcall(
-				fs.writeFile
+			Promise.promisify(fs.writeFile)(
 				ego.opts.db_path
 				ego.compacted_data()
 			).then ->
@@ -64,13 +63,10 @@ class JDB.Jdb then constructor: ->
 			)
 
 		close: ->
-			deferred = Q.defer()
-			ego.db_file.end (err) ->
-				if err
-					deferred.reject err
-				else
-					deferred.resolve()
-			deferred.promise
+			Promise.promisify(
+				ego.db_file.end
+				ego.db_file
+			)()
 	}
 
 	# Private
@@ -105,7 +101,6 @@ class JDB.Jdb then constructor: ->
 
 		load_data: ->
 			readline = require 'readline'
-			deferred = Q.defer()
 
 			rl = readline.createInterface {
 				input: fs.createReadStream ego.opts.db_path, {
@@ -118,42 +113,44 @@ class JDB.Jdb then constructor: ->
 			jdb_ref = null
 			is_first_line = true
 
-			rl.on 'line', (line) ->
-				if line[0] == '('
-					try
-						if is_first_line
-							jdb_ref = eval buf + '; jdb'
-							is_first_line = false
-						else
-							jdb = jdb_ref
-							eval buf
-					catch err
-						deferred.reject err
-					buf = line
-				else
-					buf += '\n' + line
-
-			rl.on 'close', ->
-				try
-					jdb = jdb_ref
-					eval buf
-					if jdb and typeof jdb.doc == 'object'
-						ego.doc = jdb.doc
-						deferred.resolve()
+			new Promise (resolve, reject) ->
+				rl.on 'line', (line) ->
+					if line[0] == '('
+						try
+							if is_first_line
+								jdb_ref = eval buf + '; jdb'
+								is_first_line = false
+							else
+								jdb = jdb_ref
+								eval buf
+						catch err
+							reject err
+						buf = line
 					else
-						self.compact_db_file()
-						.catch (err) ->
-							deferred.reject err
-						.done ->
-							deferred.resolve()
-				catch err
-					deferred.reject err
+						buf += '\n' + line
 
-			deferred.promise
+				rl.on 'close', ->
+					try
+						jdb = jdb_ref
+						eval buf
+						if jdb and typeof jdb.doc == 'object'
+							ego.doc = jdb.doc
+							resolve()
+						else
+							self.compact_db_file()
+							.catch (err) ->
+								reject err
+							.done ->
+								resolve()
+					catch err
+						reject err
 
 		generate_api: (opts) ->
 			if ego.opts.promise
-				opts.deferred = Q.defer()
+				opts.deferred = {}
+				opts.deferred.promise = new Promise (resolve, reject) ->
+					opts.deferred.resolve = resolve
+					opts.deferred.reject = reject
 
 			is_sent = false
 			is_rolled_back = false
