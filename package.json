@@ -1,6 +1,6 @@
 {
   "name": "jdb",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A database that hacks.",
   "main": "app.js",
   "bin": {
