@@ -2,7 +2,7 @@
 class JDB.Jdb then constructor: ->
 
 	fs = require 'fs'
-	Promise = require 'Bluebird'
+	Promise = require 'bluebird'
 
 	# Public
 	self = {
