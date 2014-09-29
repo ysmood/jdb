@@ -7,7 +7,7 @@ environment:
     - nodejs_version: "0.11"
 
 install:
-  - npm update -g npm
+  - npm update -g npm@1.4.9
   - npm install
 
 test_script:
