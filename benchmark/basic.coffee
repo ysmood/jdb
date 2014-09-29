@@ -33,4 +33,7 @@ suite
 .on 'complete', (e) ->
 	fs = require 'fs'
 	fs.unlink 'jdb.db'
-.run()
+
+
+jdb.init().done ->
+	suite.run()
