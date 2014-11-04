@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
-    "bluebird": "2.3.4",
+    "bluebird": "2.3.10",
     "coffee-script": "1.8.0",
-    "commander": "2.3.0"
+    "commander": "2.5.0"
   },
   "devDependencies": {
     "JSONSelect": "~0.4.0",
