@@ -41,15 +41,8 @@ describe 'Basic: ', ->
 			catch e
 				tdone e
 
-	it 'get value', (tdone) ->
-		jdb.exec (db) ->
-			db.send ++db.doc.a
-		, (err, data) ->
-			try
-				assert.equal 11, data
-				tdone()
-			catch e
-				tdone e
+	it 'get value', ->
+		assert.equal jdb.doc.a + 1, 11
 
 	it 'compact_db_file_sync', (tdone) ->
 		"use strict"
@@ -60,7 +53,7 @@ describe 'Basic: ', ->
 		db = eval str + '; jdb;'
 
 		try
-			assert.equal 11, db.doc.a
+			assert.equal db.doc.a, 10
 			tdone()
 		catch e
 			tdone e

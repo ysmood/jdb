@@ -8,6 +8,10 @@ class JDB.Jdb then constructor: ->
 	self = {
 
 		init: (options) ->
+			Object.defineProperty self, 'doc', {
+				get: -> ego.doc
+			}
+
 			ego.init_options options
 			ego.init_db_file().then ->
 				ego.db_file = fs.createWriteStream ego.opts.db_path, {

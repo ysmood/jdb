@@ -1,6 +1,6 @@
 {
   "name": "jdb",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A database that hacks.",
   "main": "app.js",
   "bin": {
@@ -31,12 +31,10 @@
     "commander": "2.5.0"
   },
   "devDependencies": {
-    "JSONSelect": "~0.4.0",
     "benchmark": "~1.0.0",
     "glob": "~4.0.0",
     "lodash": "~2.4.1",
     "mocha": "~1.20.1",
-    "sift": "0.0.16",
     "which": "~1.0.5"
   }
 }
