@@ -48,7 +48,7 @@ class JDB.Jdb then constructor: ->
 
 			return opts.deferred.promise if ego.opts.promise
 
-		compact_db_file: ->
+		compactDBFile: ->
 			ego.is_compressing = true
 
 			Promise.promisify(fs.writeFile)(
@@ -60,7 +60,7 @@ class JDB.Jdb then constructor: ->
 				ego.write_queue = []
 			.then()
 
-		compact_db_file_sync: ->
+		compactDBFileSync: ->
 			fs.writeFileSync(
 				ego.opts.db_path
 				ego.compacted_data()
@@ -78,7 +78,7 @@ class JDB.Jdb then constructor: ->
 
 		opts: {
 			db_path: 'jdb.db'
-			compact_db_file: true
+			compactDBFile: true
 			promise: true
 		}
 
@@ -98,10 +98,10 @@ class JDB.Jdb then constructor: ->
 		init_db_file: ->
 			if fs.existsSync ego.opts.db_path
 				ego.load_data().then ->
-					if ego.opts.compact_db_file
-						self.compact_db_file()
+					if ego.opts.compactDBFile
+						self.compactDBFile()
 			else
-				self.compact_db_file()
+				self.compactDBFile()
 
 		load_data: ->
 			readline = require 'readline'
@@ -141,7 +141,7 @@ class JDB.Jdb then constructor: ->
 							ego.doc = jdb.doc
 							resolve()
 						else
-							self.compact_db_file()
+							self.compactDBFile()
 							.catch (err) ->
 								reject err
 							.done ->

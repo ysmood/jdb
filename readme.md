@@ -134,9 +134,9 @@ It will return json:
 
     {"a":1}
 
-JDB action `compact_db_file` example:
+JDB action `compactDBFile` example:
 
-    GET /compact_db_file HTTP/1.1
+    GET /compactDBFile HTTP/1.1
     Host: 127.0.0.1:8081
 
 It will return:
@@ -164,7 +164,7 @@ The main api of class Jdb.
 
      Where to save the database file. Default value is `jdb.db`.
 
-   * **compact_db_file** _{Boolean}_
+   * **compactDBFile** _{Boolean}_
 
      Whether to compact db file before start up or not. Default true.
 
@@ -240,13 +240,13 @@ A api and the only api to interact with the data in database.
        The data you send from `jdb.send(data)` or `jdb.save(data)`.
 
 
-## `compact_db_file ([callback])`
+## `compactDBFile ([callback])`
 
 Reduce the size of the database file. It will calculate all the commands and save the final `doc` object to the file and delete all the other commands.
 
-## `compact_db_file_sync ()`
+## `compactDBFileSync ()`
 
-The sync version of `compact_db_file (callback)`.
+The sync version of `compactDBFile (callback)`.
 
 ****************************************************************************
 

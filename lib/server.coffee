@@ -19,7 +19,7 @@ class JDB.Server then constructor: ->
 			db_path: 'jdb.db'
 			port: 8137
 			host: '127.0.0.1'
-			compact_db_file: true
+			compactDBFile: true
 			config_path: null
 		}
 
@@ -43,7 +43,7 @@ class JDB.Server then constructor: ->
 			.option '-i, --interactive', 'Start with interactive mode'
 			.option '-p, --port <port>', 'Port to listen to. Default is ' + ego.opts.port, parseInt
 			.option '--host <host>', "Host to listen to. Default is #{ego.opts.host} only"
-			.option '-c, --compact_db_file <true>', 'Whether compact db file at start up or not', (data) ->
+			.option '-c, --compactDBFile <true>', 'Whether compact db file at start up or not', (data) ->
 				data == 'true'
 			.option '-v, --ver', 'Print JDB version'
 			.parse process.argv
@@ -101,8 +101,8 @@ class JDB.Server then constructor: ->
 				when '/exec'
 					ego.exec ht
 
-				when '/compact_db_file'
-					ego.compact_db_file ht
+				when '/compactDBFile'
+					ego.compactDBFile ht
 
 				else
 					ego.not_found ht
@@ -150,8 +150,8 @@ class JDB.Server then constructor: ->
 						else
 							ego.send ht, JSON.stringify(data or 'ok')
 
-		compact_db_file: (ht) ->
-			ego.jdb.compact_db_file
+		compactDBFile: (ht) ->
+			ego.jdb.compactDBFile
 			.then (err) ->
 				ego.send ht, 'OK'
 			.catch (err) ->

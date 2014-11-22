@@ -12,7 +12,7 @@ describe 'Basic: ', ->
 	before ->
 		jdb.init {
 			db_path
-			compact_db_file: false
+			compactDBFile: false
 		}
 
 	it 'set value', (tdone) ->
@@ -44,10 +44,10 @@ describe 'Basic: ', ->
 	it 'get value', ->
 		assert.equal jdb.doc.a + 1, 11
 
-	it 'compact_db_file_sync', (tdone) ->
+	it 'compactDBFileSync', (tdone) ->
 		"use strict"
 
-		jdb.compact_db_file_sync()
+		jdb.compactDBFileSync()
 
 		str = fs.readFileSync db_path, 'utf8'
 		db = eval str + '; jdb;'
@@ -58,14 +58,14 @@ describe 'Basic: ', ->
 		catch e
 			tdone e
 
-	it 'compact_db_file', (tdone) ->
+	it 'compactDBFile', (tdone) ->
 		"use strict"
 
 		jdb.exec (jdb) ->
 			jdb.doc.a = 12
 			jdb.save()
 		.then ->
-			jdb.compact_db_file()
+			jdb.compactDBFile()
 		.done ->
 			str = fs.readFileSync db_path, 'utf8'
 			db = eval str + '; jdb;'
