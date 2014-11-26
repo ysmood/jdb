@@ -240,9 +240,9 @@ A api and the only api to interact with the data in database.
        The data you send from `jdb.send(data)` or `jdb.save(data)`.
 
 
-## `compactDBFile ([callback])`
+## `compactDBFile ()`
 
-Reduce the size of the database file. It will calculate all the commands and save the final `doc` object to the file and delete all the other commands.
+Returns a promise. Reduce the size of the database file. It will calculate all the commands and save the final `doc` object to the file and delete all the other commands.
 
 ## `compactDBFileSync ()`
 
