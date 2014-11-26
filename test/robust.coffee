@@ -1,17 +1,17 @@
 fs = require 'fs'
 assert = require 'assert'
 
-db_path = 'test/robust.db'
+dbPath = 'test/robust.db'
 
 try
-	fs.unlinkSync db_path
+	fs.unlinkSync dbPath
 
 jdb = new (require '../')
 
 describe 'Handle exception:', ->
 	before ->
 		jdb.init {
-			db_path
+			dbPath
 			promise: true
 		}
 

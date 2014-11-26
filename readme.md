@@ -160,7 +160,7 @@ The main api of class Jdb.
 
 * **options**
 
-   * **db_path** _{Boolean}_
+   * **dbPath** _{Boolean}_
 
      Where to save the database file. Default value is `jdb.db`.
 

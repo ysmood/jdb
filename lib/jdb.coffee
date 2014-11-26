@@ -14,7 +14,7 @@ class JDB.Jdb then constructor: ->
 
 			ego.init_options options
 			ego.init_db_file().then ->
-				ego.db_file = fs.createWriteStream ego.opts.db_path, {
+				ego.db_file = fs.createWriteStream ego.opts.dbPath, {
 					flags: 'a'
 					encoding: 'utf8'
 				}
@@ -52,7 +52,7 @@ class JDB.Jdb then constructor: ->
 			ego.is_compressing = true
 
 			Promise.promisify(fs.writeFile)(
-				ego.opts.db_path
+				ego.opts.dbPath
 				ego.compacted_data()
 			).then ->
 				ego.is_compressing = false
@@ -62,7 +62,7 @@ class JDB.Jdb then constructor: ->
 
 		compactDBFileSync: ->
 			fs.writeFileSync(
-				ego.opts.db_path
+				ego.opts.dbPath
 				ego.compacted_data()
 			)
 
@@ -77,7 +77,7 @@ class JDB.Jdb then constructor: ->
 	ego = {
 
 		opts: {
-			db_path: 'jdb.db'
+			dbPath: 'jdb.db'
 			compactDBFile: true
 			promise: true
 		}
@@ -96,7 +96,7 @@ class JDB.Jdb then constructor: ->
 				ego.opts[k] = options[k] if options[k] != undefined
 
 		init_db_file: ->
-			if fs.existsSync ego.opts.db_path
+			if fs.existsSync ego.opts.dbPath
 				ego.load_data().then ->
 					if ego.opts.compactDBFile
 						self.compactDBFile()
@@ -107,7 +107,7 @@ class JDB.Jdb then constructor: ->
 			readline = require 'readline'
 
 			rl = readline.createInterface {
-				input: fs.createReadStream ego.opts.db_path, {
+				input: fs.createReadStream ego.opts.dbPath, {
 					encoding: 'utf8'
 				}
 				output: process.stdout

@@ -1,17 +1,17 @@
 assert = require 'assert'
 fs = require 'fs'
 
-db_path = 'test/baisc.db'
+dbPath = 'test/baisc.db'
 
 try
-	fs.unlinkSync db_path
+	fs.unlinkSync dbPath
 
 jdb = new (require '../')
 
 describe 'Basic: ', ->
 	before ->
 		jdb.init {
-			db_path
+			dbPath
 			compactDBFile: false
 		}
 
@@ -49,7 +49,7 @@ describe 'Basic: ', ->
 
 		jdb.compactDBFileSync()
 
-		str = fs.readFileSync db_path, 'utf8'
+		str = fs.readFileSync dbPath, 'utf8'
 		db = eval str + '; jdb;'
 
 		try
@@ -67,7 +67,7 @@ describe 'Basic: ', ->
 		.then ->
 			jdb.compactDBFile()
 		.done ->
-			str = fs.readFileSync db_path, 'utf8'
+			str = fs.readFileSync dbPath, 'utf8'
 			db = eval str + '; jdb;'
 
 			try

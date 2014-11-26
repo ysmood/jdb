@@ -16,7 +16,7 @@ class JDB.Server then constructor: ->
 
 		opts: {
 			interactive: false
-			db_path: 'jdb.db'
+			dbPath: 'jdb.db'
 			port: 8137
 			host: '127.0.0.1'
 			compactDBFile: true
@@ -39,7 +39,7 @@ class JDB.Server then constructor: ->
 			cmder = require 'commander'
 			cmder
 			.usage '[options] [config.json or config.js]'
-			.option '-d, --db_path <path>', 'Data base file path'
+			.option '-d, --dbPath <path>', 'Data base file path'
 			.option '-i, --interactive', 'Start with interactive mode'
 			.option '-p, --port <port>', 'Port to listen to. Default is ' + ego.opts.port, parseInt
 			.option '--host <host>', "Host to listen to. Default is #{ego.opts.host} only"
