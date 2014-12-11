@@ -51,7 +51,7 @@ class JDB.Jdb then constructor: ->
 		compactDBFile: ->
 			ego.is_compressing = true
 
-			Promise.promisify(fs.writeFile)(
+			ego.promisify(fs.writeFile)(
 				ego.opts.dbPath
 				ego.compacted_data()
 			).then ->
@@ -67,7 +67,7 @@ class JDB.Jdb then constructor: ->
 			)
 
 		close: ->
-			Promise.promisify(
+			ego.promisify(
 				ego.db_file.end
 				ego.db_file
 			)()
@@ -208,6 +208,15 @@ class JDB.Jdb then constructor: ->
 				rollback: function() {}
 			};\n"
 
+		promisify: (fn, self) ->
+			(args...) ->
+				new Promise (resolve, reject) ->
+					args.push ->
+						if arguments[0]?
+							reject arguments[0]
+						else
+							resolve arguments[1]
+					fn.apply self, args
 	}
 
 	for k, v of self
