@@ -1,6 +1,6 @@
 {
   "name": "jdb",
-  "version": "0.3.9",
+  "version": "0.4.0",
   "description": "A database that hacks.",
   "main": "app.js",
   "bin": {
@@ -26,15 +26,15 @@
   },
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
-    "bluebird": "2.4.0",
+    "bluebird": "2.5.2",
     "coffee-script": "1.8.0",
-    "commander": "2.5.1"
+    "commander": "2.6.0"
   },
   "devDependencies": {
-    "benchmark": "~1.0.0",
-    "glob": "~4.0.0",
-    "lodash": "~2.4.1",
-    "mocha": "~1.20.1",
-    "which": "~1.0.5"
+    "benchmark": "1.0.0",
+    "glob": "4.3.2",
+    "lodash": "2.4.1",
+    "mocha": "2.1.0",
+    "which": "1.0.8"
   }
 }
