@@ -36,9 +36,9 @@ task 'build', 'Compile coffee to js', ->
 task 'clean', 'Clean js', ->
 	console.log ">> Clean js..."
 
-	glob.sync 'lib/**/*.js', (err, paths) ->
-		for path in paths
-			fs.unlinkSync path
+	paths = glob.sync 'lib/**/*.js'
+	for path in paths
+		fs.unlinkSync path
 
 task 'dev', 'Start test server', ->
 	ps = null

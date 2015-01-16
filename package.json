@@ -8,8 +8,7 @@
   },
   "scripts": {
     "test": "cake test",
-    "prepublish": "cake build",
-    "publish": "cake clean"
+    "prepublish": "cake build"
   },
   "repository": {
     "type": "git",
