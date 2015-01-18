@@ -1,5 +1,5 @@
 
-{ spawn } = require '../lib/kit'
+kit = require 'nokit'
 assert = require 'assert'
 
 port = 8237
@@ -9,10 +9,9 @@ retry_count = 0
 
 describe 'Standalone Mode:', ->
 	before (tdone) ->
-		server = spawn(
+		server = kit.spawn(
 			'node'
 			['bin/jdb.js', '-p', port]
-			{ stdio: 'inherit' }
 		).process
 		setTimeout ->
 			tdone()

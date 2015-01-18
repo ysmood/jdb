@@ -31,9 +31,7 @@
   },
   "devDependencies": {
     "benchmark": "*",
-    "glob": "*",
-    "lodash": "*",
-    "mocha": "*",
-    "which": "*"
+    "nokit": "*",
+    "mocha": "*"
   }
 }
