@@ -1,6 +1,6 @@
 {
   "name": "jdb",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "A database that hacks.",
   "main": "app.js",
   "bin": {
@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
-    "bluebird": "2.9.3",
-    "coffee-script": "1.8.0",
+    "bluebird": "2.9.4",
+    "coffee-script": "1.9.0",
     "commander": "2.6.0"
   },
   "devDependencies": {
