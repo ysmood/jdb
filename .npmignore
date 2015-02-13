@@ -1,7 +1,0 @@
-benchmark
-test
-Cakefile
-.*
-*.coffee
-*.db
-lib/kit.coffee

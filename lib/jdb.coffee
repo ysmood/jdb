@@ -124,7 +124,7 @@ module.exports = ->
 					else
 						isRejected = true
 
-					if jdb_ref and typeof jdb.doc == 'object'
+					if jdb_ref and typeof jdb_ref.doc == 'object'
 						ego.doc = jdb_ref.doc
 					reject err
 

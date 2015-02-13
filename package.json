@@ -1,6 +1,6 @@
 {
   "name": "jdb",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "A database that hacks.",
   "main": "lib/jdb.js",
   "bin": {
@@ -23,6 +23,9 @@
   "bugs": {
     "url": "https://github.com/ysmood/jdb/issues"
   },
+  "files": [
+    "lib/**/*.js", "bin"
+  ],
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
     "bluebird": "2.9.7",

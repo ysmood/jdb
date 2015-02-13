@@ -1,0 +1,10 @@
+var jdb = { doc: {}, send: function() {}, save: function() {}, rollback: function() {} };
+(function (jdb) {
+          jdb.doc.a = 10;
+          return jdb.save();
+        })(jdb, undefined);
+(function (jdb) {
+          a.b.c = 0;
+          jdb.doc.a = 20;
+          return jdb.save();
+        })(jdb, undefined);

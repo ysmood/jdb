@@ -74,6 +74,9 @@ module.exports = ->
 						jdb.doc = data
 						jdb.save()
 				}
+				.then ->
+					process.stdout.write 'JDB> saved\ncoffee> '
+				return
 
 			ego.jdb.exec {
 				command: (jdb) ->

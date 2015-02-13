@@ -6,13 +6,13 @@ dbPath = 'test/robust.db'
 try
 	fs.unlinkSync dbPath
 
-jdb = require('../lib/jdb')()
+Jdb = require('../lib/jdb')
+jdb = Jdb()
 
 describe 'Handle exception:', ->
 	before ->
 		jdb.init {
 			dbPath
-			promise: true
 		}
 
 	it 'catch error', (tdone) ->
@@ -51,3 +51,13 @@ describe 'Handle exception:', ->
 				.done (a) ->
 					assert.equal a, 0
 					tdone()
+
+	it 'broken db', (tdone) ->
+		jdb = Jdb()
+		jdb.init {
+			dbPath: 'test/fixtures/broken'
+			compactDBFile: false
+		}
+		.catch (err) ->
+			assert.equal jdb.doc.a, 10
+			tdone()
