@@ -285,7 +285,7 @@ or a non-cluster application, the adapter issue should also be taken into consid
 
 ### JDB http server on Intel Core i7 2.3GHz SSD
 
-* exec x 65,912 ops/sec ±2.84% (72 runs sampled)
+* exec x 1,111 ops/sec ±5.90% (60 runs sampled)
 
 # Road Map
 

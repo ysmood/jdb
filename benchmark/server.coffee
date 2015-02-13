@@ -6,6 +6,7 @@ http = require 'http'
 suite
 
 .add('* exec', {
+	defer: true
 	fn: (deferred) ->
 		req = http.request {
 			hostname: '127.0.0.1'
@@ -14,7 +15,7 @@ suite
 			method: 'POST'
 		}, (res) ->
 			res.on 'data', (data) ->
-				data
+				deferred.resolve()
 
 		req.end JSON.stringify command: ((jdb) ->
 			jdb.doc.a++
