@@ -1,3 +1,4 @@
 *.db
 *.js
 node_modules
+.nobone

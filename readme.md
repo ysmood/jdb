@@ -3,7 +3,7 @@
 This project is inspired by [nedb](https://github.com/louischatriot/nedb).
 It aims to create a flexible database without any weird syntax.
 Just few APIs will make everything work smoothly.
-JDB is an append-only, in-memory, non-block IO database.
+JDB is an file-append-only, in-memory, non-block IO database.
 
 It is one of the core module of [nobone](https://github.com/ysmood/nobone).
 
@@ -21,22 +21,20 @@ For further infomation goto [How it works?](#user-content-how-it-works)
 
 * Use full functioned javascript to operate your data, no steep learning curve.
 
-* Make debugging inside the data possible.
-
 * Support both standalone mode (server) and in-application mode (lib).
 
+* Build-in CLI tool to interact with database directly.
 
-# Quick start
 
-### Installation
+# Quick Start
+
+## Installation
 
 Install `jdb` first.
 
     npm install jdb
 
-### Examples
-
-Here's the embedded mode example.
+## As a Lib
 
 ```coffeescript
 
@@ -69,8 +67,7 @@ some_data = {
 }
 
 # Init the db file before you start.
-jdb.init()
-.then ->
+jdb.init().then ->
 
     # Set data.
     jdb.exec
@@ -100,7 +97,7 @@ jdb.init()
 
 ```
 
-# Http server quick start
+## CLI tool
 
 To allow JDB to serve multiple clients, you can start it as a http server (standalone mode).
 
@@ -143,7 +140,7 @@ It will return:
     OK
 
 
-# How it works?
+# How it Works?
 
 It simply executes all your js code to manipulate a `doc` object, and append each
 js code to a file. Each time when you start up the JDB, it executes all the code in the file,
@@ -252,20 +249,16 @@ The sync version of `compactDBFile (callback)`.
 
 ****************************************************************************
 
-# Unit test
+# Unit Test
 
-To use `cake`, install [coffee-script](coffeescript.org) globally: `npm install -g coffee-script`.
-
-Unit test will test all the basic functions of JDB. Before your pull request, run it first.
-
-    cake test
+    npm run cake -- test
 
 
 # Benchmarks
 
 To run the benchmark:
 
-    cake benchmark
+    npm run cake -- benchmark
 
 Though for MongoDB and Redis, most of their CPU time is ate by their DB adapters, but I think for some small projects, such as personal blog,
 or a non-cluster application, the adapter issue should also be taken into consideration.
@@ -277,21 +270,15 @@ or a non-cluster application, the adapter issue should also be taken into consid
 
 ### [NeDB][] on Intel Core i7 2.3GHz SSD
 
-**Much much faster than NeDB**
-
 * insert x 5,195 ops/sec ±2.94% (73 runs sampled)
 * query x 336 ops/sec ±1.87% (83 runs sampled)
 
 ### MongoDB on Intel Core i7 2.3GHz SSD
 
-**Much faster than MongoDB**
-
 * insert x 3,744 ops/sec ±2.63% (76 runs sampled)
 * query x 2,416 ops/sec ±3.89% (70 runs sampled)
 
 ### Redis on Intel Core i7 2.3GHz SSD
-
-**Still much faster than Redis**
 
 * insert x 10,619 ops/sec ±2.33% (77 runs sampled)
 * query x 10,722 ops/sec ±2.27% (80 runs sampled)
