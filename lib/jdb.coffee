@@ -1,8 +1,7 @@
+fs = require 'fs'
+Promise = require 'bluebird'
 
-class JDB.Jdb then constructor: ->
-
-	fs = require 'fs'
-	Promise = require 'bluebird'
+module.exports = ->
 
 	# Public
 	self = {
@@ -118,6 +117,17 @@ class JDB.Jdb then constructor: ->
 			is_first_line = true
 
 			new Promise (resolve, reject) ->
+				isRejected = false
+				error = (err) ->
+					if isRejected
+						return
+					else
+						isRejected = true
+
+					if jdb_ref and typeof jdb.doc == 'object'
+						ego.doc = jdb_ref.doc
+					reject err
+
 				rl.on 'line', (line) ->
 					if line[0] == '('
 						try
@@ -128,7 +138,7 @@ class JDB.Jdb then constructor: ->
 								jdb = jdb_ref
 								eval buf
 						catch err
-							reject err
+							error err
 						buf = line
 					else
 						buf += '\n' + line
@@ -143,11 +153,11 @@ class JDB.Jdb then constructor: ->
 						else
 							self.compactDBFile()
 							.catch (err) ->
-								reject err
+								error err
 							.done ->
 								resolve()
 					catch err
-						reject err
+						error err
 
 		generate_api: (opts) ->
 			if ego.opts.promise
@@ -218,13 +228,5 @@ class JDB.Jdb then constructor: ->
 							resolve arguments[1]
 					fn.apply self, args
 	}
-
-	for k, v of self
-		@[k] = v
-	self = @
-
-	for k, v of ego
-		if typeof v == 'function'
-			v.bind self
 
 	self

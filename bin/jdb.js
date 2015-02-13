@@ -4,6 +4,4 @@ try {
 	require('coffee-script/register')
 } catch (e) {}
 
-require('../lib/server')
-
-new JDB.Server
+require('../lib/server')()

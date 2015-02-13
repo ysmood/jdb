@@ -6,7 +6,7 @@ dbPath = 'test/robust.db'
 try
 	fs.unlinkSync dbPath
 
-jdb = new (require '../')
+jdb = require('../lib/jdb')()
 
 describe 'Handle exception:', ->
 	before ->

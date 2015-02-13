@@ -41,7 +41,7 @@ Here's the embedded mode example.
 
 ```coffeescript
 
-jdb = require 'jdb'
+jdb = require('jdb')()
 
 # The data to play with.
 some_data = {
@@ -156,7 +156,7 @@ and the last time's `doc` object will come back again in the memory.
 
 The main api of class Jdb.
 
-## `constructor ([options])`
+## `init ([options])`
 
 * **options**
 

@@ -6,7 +6,7 @@ dbPath = 'test/baisc.db'
 try
 	fs.unlinkSync dbPath
 
-jdb = new (require '../')
+jdb = require('../lib/jdb')()
 
 describe 'Basic: ', ->
 	before ->

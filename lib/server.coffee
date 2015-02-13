@@ -1,15 +1,13 @@
 
-require '../'
+Jdb = require './jdb'
 
 ###
     JDB.Server
 ###
-class JDB.Server then constructor: ->
+module.exports = ->
 
 	# Public
-	self = {
-
-	}
+	self = {}
 
 	# Private
 	ego = {
@@ -26,7 +24,7 @@ class JDB.Server then constructor: ->
 		init: ->
 			ego.init_options()
 
-			ego.jdb = new JDB.Jdb
+			ego.jdb = Jdb()
 
 			ego.jdb.init ego.opts
 			.done ->
@@ -164,15 +162,6 @@ class JDB.Server then constructor: ->
 			ego.send ht, 'not found', 404
 	}
 
-	for k, v of self
-		@[k] = v
-	self = @
-
-	for k, v of ego
-		if typeof v == 'function'
-			v.bind self
-
 	ego.init()
 
-	return self
-
+	self
