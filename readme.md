@@ -1,12 +1,11 @@
 # Overview
 
 This project is inspired by [nedb](https://github.com/louischatriot/nedb).
-It aims to create a flexible database without any weird syntax or rules.
+It aims to create a flexible database without any weird syntax.
 Just few APIs will make everything work smoothly.
 JDB is an append-only, in-memory, non-block IO database.
 
-It uses json to decrease database file size, which means after all javascript commands are executed,
-they will become a single json object.
+It is one of the core module of [nobone](https://github.com/ysmood/nobone).
 
 For further infomation goto [How it works?](#user-content-how-it-works)
 
@@ -149,6 +148,9 @@ It will return:
 It simply executes all your js code to manipulate a `doc` object, and append each
 js code to a file. Each time when you start up the JDB, it executes all the code in the file,
 and the last time's `doc` object will come back again in the memory.
+
+It uses json to decrease database file size, which means after all javascript commands are executed,
+they will become a single json object.
 
 ****************************************************************************
 
