@@ -267,39 +267,38 @@ To run the benchmark:
 
     cake benchmark
 
+Though for MongoDB and Redis, most of their CPU time is ate by their DB adapters, but I think for some small projects, such as personal blog,
+or a non-cluster application, the adapter issue should also be taken into consideration.
+
 ### JDB on Intel Core i7 2.3GHz SSD
 
-* insert x 15,562 ops/sec ±4.37% (62 runs sampled)
-* query x 665,237 ops/sec ±0.83% (95 runs sampled)
+* insert x 17,500 ops/sec ±3.08% (75 runs sampled)
+* query x 803,273 ops/sec ±1.06% (94 runs sampled)
+
+### [NeDB][] on Intel Core i7 2.3GHz SSD
+
+**Much much faster than NeDB**
+
+* insert x 5,195 ops/sec ±2.94% (73 runs sampled)
+* query x 336 ops/sec ±1.87% (83 runs sampled)
 
 ### MongoDB on Intel Core i7 2.3GHz SSD
 
-**JDB is much faster than MongoDB**
+**Much faster than MongoDB**
 
 * insert x 3,744 ops/sec ±2.63% (76 runs sampled)
 * query x 2,416 ops/sec ±3.89% (70 runs sampled)
 
 ### Redis on Intel Core i7 2.3GHz SSD
 
-**JDB's query performance is faster than Redis**
+**Still much faster than Redis**
 
 * insert x 10,619 ops/sec ±2.33% (77 runs sampled)
 * query x 10,722 ops/sec ±2.27% (80 runs sampled)
 
-### JDB on Digitalocean VPS 1 CPU
-
-**Even on a much slower machine JDB is still much faster than MongoDB**
-
-* insert x 9,460 ops/sec ±3.34% (78 runs sampled)
-* query x 343,502 ops/sec ±2.57% (93 runs sampled)
-
 ### JDB http server on Intel Core i7 2.3GHz SSD
 
 * exec x 65,912 ops/sec ±2.84% (72 runs sampled)
-
-Though for MongoDB and Redis, most of their CPU time is ate by their DB adapters, but I think
-for some small projects, such as personal blog, or a non-cluster application, the adapter issue
-should also be taken into consideration.
 
 # Road Map
 
@@ -312,3 +311,5 @@ should also be taken into consideration.
 ### BSD
 
 May 2014, Yad Smood
+
+[NeDB]: https://github.com/louischatriot/nedb

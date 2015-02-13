@@ -24,7 +24,8 @@
     "url": "https://github.com/ysmood/jdb/issues"
   },
   "files": [
-    "lib/**/*.js", "bin"
+    "lib/**/*.js",
+    "bin"
   ],
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
@@ -34,7 +35,8 @@
   },
   "devDependencies": {
     "benchmark": "*",
-    "nokit": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "nedb": "^1.1.1",
+    "nokit": "*"
   }
 }

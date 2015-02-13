@@ -2,7 +2,9 @@ Benchmark = require('benchmark')
 suite = new Benchmark.Suite
 Benchmark.support.timeout = false
 
-jdb = new (require '../')
+jdb = require('../')()
+
+count = 0
 
 suite
 
@@ -11,21 +13,17 @@ suite
 	fn: (deferred) ->
 		jdb.exec {
 			command: (jdb) ->
-				jdb.doc.arr ?= []
-				jdb.doc.arr.push Math.random()
+				jdb.doc.arr[count++] = Math.random()
 				jdb.save()
 			callback: (err, data) ->
+				return deferred.reject err if err
 				deferred.resolve()
 		}
 })
 
 .add('* query', {
 	fn: ->
-		jdb.exec {
-			command: (jdb) ->
-				jdb.send jdb.doc.arr.slice(0, Math.random() * 100)
-			callback: (err, data) ->
-		}
+		val = jdb.doc.arr.slice 0, Math.random() * 100
 })
 
 .on 'cycle', (e) ->
@@ -35,5 +33,9 @@ suite
 	fs.unlink 'jdb.db'
 
 
-jdb.init().done ->
+jdb.init({ promise: false }).done ->
+	jdb.exec (jdb) ->
+		jdb.doc.arr = []
+		jdb.save()
+
 	suite.run()

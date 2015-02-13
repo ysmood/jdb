@@ -15,6 +15,7 @@ module.exports = ->
 		opts: {
 			interactive: false
 			dbPath: 'jdb.db'
+			promise: false
 			port: 8137
 			host: '127.0.0.1'
 			compactDBFile: true
@@ -73,9 +74,9 @@ module.exports = ->
 					command: (jdb, data) ->
 						jdb.doc = data
 						jdb.save()
+					callback: ->
+						process.stdout.write 'JDB> saved\ncoffee> '
 				}
-				.then ->
-					process.stdout.write 'JDB> saved\ncoffee> '
 				return
 
 			ego.jdb.exec {
@@ -159,7 +160,6 @@ module.exports = ->
 				ego.send ht, JSON.stringify(
 					{ error: err.message }
 				), 500
-			.done()
 
 		not_found: (ht) ->
 			ego.send ht, 'not found', 404
