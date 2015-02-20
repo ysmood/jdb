@@ -30,14 +30,14 @@
   ],
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
-    "bluebird": "2.9.7",
-    "coffee-script": "1.9.0",
+    "bluebird": "2.9.12",
+    "coffee-script": "1.9.1",
     "commander": "2.6.0"
   },
   "devDependencies": {
     "benchmark": "*",
     "mocha": "*",
-    "nedb": "^1.1.1",
+    "nedb": "1.1.1",
     "nokit": "*"
   }
 }
