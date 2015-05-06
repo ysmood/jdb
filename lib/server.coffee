@@ -28,7 +28,7 @@ module.exports = ->
 			ego.jdb = Jdb()
 
 			ego.jdb.init ego.opts
-			.done ->
+			.then ->
 				if ego.opts.interactive
 					ego.init_interactive()
 				else

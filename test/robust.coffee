@@ -34,7 +34,6 @@ describe 'Handle exception:', ->
 				tdone()
 			catch e
 				tdone e
-		.done()
 
 	it 'rollback', (tdone) ->
 		jdb.exec (db) ->
@@ -48,7 +47,7 @@ describe 'Handle exception:', ->
 			err.promise.then ->
 				jdb.exec (db) ->
 					db.send db.doc.a
-				.done (a) ->
+				.then (a) ->
 					assert.equal a, 0
 					tdone()
 

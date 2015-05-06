@@ -33,7 +33,7 @@ suite
 	fs.unlink 'jdb.db'
 
 
-jdb.init({ promise: false }).done ->
+jdb.init({ promise: false }).then ->
 	jdb.exec (jdb) ->
 		jdb.doc.arr = []
 		jdb.save()

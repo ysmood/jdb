@@ -1,5 +1,5 @@
 fs = require 'fs'
-Promise = require 'bluebird'
+Promise = require 'yaku'
 
 module.exports = ->
 
@@ -40,7 +40,7 @@ module.exports = ->
 				err.promise = jdb.rollback()
 
 				if opts.callback
-					err.promise.done ->
+					err.promise.then ->
 						opts.callback err
 				else
 					opts.deferred.reject err if ego.opts.promise
@@ -154,7 +154,7 @@ module.exports = ->
 							self.compactDBFile()
 							.catch (err) ->
 								error err
-							.done ->
+							.then ->
 								resolve()
 					catch err
 						error err

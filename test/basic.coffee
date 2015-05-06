@@ -34,7 +34,7 @@ describe 'Basic: ', ->
 	it 'test promise', (tdone) ->
 		jdb.exec 10, (db, data) ->
 			db.send db.doc.a
-		.done (data) ->
+		.then (data) ->
 			try
 				assert.equal data, 10
 				tdone()
@@ -66,7 +66,7 @@ describe 'Basic: ', ->
 			jdb.save()
 		.then ->
 			jdb.compactDBFile()
-		.done ->
+		.then ->
 			str = fs.readFileSync dbPath, 'utf8'
 			db = eval str + '; jdb;'
 
