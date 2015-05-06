@@ -251,14 +251,14 @@ The sync version of `compactDBFile (callback)`.
 
 # Unit Test
 
-    npm run cake -- test
+    npm run no -- test
 
 
 # Benchmarks
 
 To run the benchmark:
 
-    npm run cake -- benchmark
+    npm run no -- benchmark
 
 Though for MongoDB and Redis, most of their CPU time is ate by their DB adapters, but I think for some small projects, such as personal blog,
 or a non-cluster application, the adapter issue should also be taken into consideration.

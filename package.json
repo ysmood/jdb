@@ -1,15 +1,15 @@
 {
   "name": "jdb",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A database that hacks.",
   "main": "lib/jdb.js",
   "bin": {
     "jdb": "bin/jdb.js"
   },
   "scripts": {
-    "cake": "cake",
-    "test": "cake test",
-    "prepublish": "cake build"
+    "no": "no",
+    "test": "no test",
+    "prepublish": "no build"
   },
   "repository": {
     "type": "git",
@@ -30,14 +30,14 @@
   ],
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
-    "bluebird": "2.9.12",
-    "coffee-script": "1.9.1",
-    "commander": "2.6.0"
+    "coffee-script": "1.9.2",
+    "commander": "2.8.1",
+    "yaku": "0.1.4"
   },
   "devDependencies": {
     "benchmark": "*",
     "mocha": "*",
-    "nedb": "1.1.1",
+    "nedb": "1.1.2",
     "nokit": "*"
   }
 }
