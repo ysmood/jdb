@@ -30,9 +30,9 @@
   ],
   "homepage": "https://github.com/ysmood/jdb",
   "dependencies": {
-    "coffee-script": "1.9.2",
+    "coffee-script": "1.9.3",
     "commander": "2.8.1",
-    "yaku": "0.1.6"
+    "yaku": "0.2.8"
   },
   "devDependencies": {
     "benchmark": "*",
