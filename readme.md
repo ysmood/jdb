@@ -36,47 +36,49 @@ Install `jdb` first.
 
 ## As a Lib
 
-```coffeescript
+```js
 
-jdb = require('jdb')()
+var jdb = require('jdb')();
 
-# The data to play with.
-some_data = {
+// The data to play with.
+var some_data = {
     "name": {
-        "first": "Yad"
+        "first": "Yad",
         "last": "Smood"
-    }
-    "fav_color": "blue"
+    },
+    "fav_color": "blue",
     "languages": [
         {
-            "name": "Chinese"
+            "name": "Chinese",
             "level": 10
-        }
+        },
         {
-            "name": "English"
-            "level": 8
+            "name": "English",
+            "level": 8,
             "preferred": true
-        }
+        },
         {
-            "name": "Japenese"
+            "name": "Japenese",
             "level": 6
         }
-    ]
-    "height": 180
+    ],
+    "height": 180,
     "weight": 68
 }
 
-# Init the db file before you start.
-jdb.init().then ->
+// Init the db file before you start.
+jdb.init().then(function () {
 
-    # Set data.
-    jdb.exec
-        data: some_data
-        command: (jdb, data) ->
+    // Set data.
+    jdb.exec({
+        data: some_data,
+        command: function (jdb, data) {
             jdb.doc.ys = data
             jdb.save 'saved'
+        }
         callback: (err, data) ->
             console.log data # output >> saved
+    });
 
     # Or simple way to save data.
     jdb.exec some_data, (jdb, data) ->
@@ -94,7 +96,7 @@ jdb.init().then ->
 
     # Get the value. Much simpler.
     console.log jdb.doc.ys.name # output >> [ "Yad", "Smood" ]
-
+});
 ```
 
 ## CLI tool
