@@ -1,3 +1,5 @@
+# nofile-pre-require: coffee-script/register
+
 kit = require 'nokit'
 
 module.exports = (task) ->
