@@ -4,3 +4,7 @@ node_js:
   - "0.10"
 before_install:
   - "npm -v"
+
+branches:
+  only:
+    - master
